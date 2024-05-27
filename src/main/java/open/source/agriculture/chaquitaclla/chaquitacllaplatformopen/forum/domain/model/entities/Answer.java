@@ -3,7 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 import jakarta.persistence.*;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Question;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.model.aggregates.User;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

@@ -2,7 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.model.aggregates.User;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
