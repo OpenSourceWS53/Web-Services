@@ -6,11 +6,10 @@ import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects.PhenologicalPhase;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.domain.AbstractAggregateRoot;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Sowing extends AbstractAggregateRoot<Sowing>{
+public class Sowing {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)

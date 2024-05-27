@@ -1,4 +1,4 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries;
 
-public record GetCaresByCropIdQuery(Long CropId){
+public record GetCaresByCropIdQuery(Long cropId){
 }
