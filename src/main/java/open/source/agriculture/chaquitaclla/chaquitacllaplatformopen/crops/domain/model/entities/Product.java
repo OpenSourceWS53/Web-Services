@@ -3,6 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.doma
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects.ProductType;
 
 @Getter
 @Entity
@@ -17,9 +18,13 @@ public class Product {
     @NotNull
     private Float quantity;
 
-    public Product(String name, Float quantity) {
+    @NotNull
+    private ProductType productType;
+
+    public Product(String name, Float quantity, ProductType productType) {
         this.name = name;
         this.quantity = quantity;
+        this.productType = productType;
     }
 
     public Product() {

@@ -3,14 +3,20 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.doma
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Product;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects.PhenologicalPhase;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
+import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Sowing {
+public class Sowing extends AbstractAggregateRoot<Sowing> {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +30,10 @@ public class Sowing {
     @NotNull
     private int areaLand;
 
+    @Getter
+    @NotNull
+    private boolean status;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -32,9 +42,16 @@ public class Sowing {
     @JoinColumn(name = "crop_id")
     private Crop crop;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "sowing_products",
+            joinColumns = @JoinColumn(name = "sowing_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> products;
+
     private PhenologicalPhase phenologicalPhase;
 
     public Sowing(){
+    products = new HashSet<>();
     }
     public Sowing(DateRange dateRange, int areaLand, User user){
         this.dateRange = dateRange;
