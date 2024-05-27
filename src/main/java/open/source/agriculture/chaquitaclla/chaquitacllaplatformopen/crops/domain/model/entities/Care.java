@@ -3,6 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.doma
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Sowing;
 
 @Getter
@@ -14,15 +15,15 @@ public class Care {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sowing_id")
+    @JoinColumn(name = "crop_id")
     @NotNull
-    private Sowing sowing;
+    private Crop crop;
 
     @NotNull
     private String description;
 
-    public Care(Sowing sowing, String description) {
-        this.sowing = sowing;
+    public Care(Crop crop, String description) {
+        this.crop = crop;
         this.description = description;
     }
     public Care(){

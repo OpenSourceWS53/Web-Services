@@ -21,26 +21,26 @@ public class SowingControl {
     @NotNull
     private Sowing sowing;
 
-    private Date control_date;
+    private Date controlDate;
 
     @NotNull
-    private String condition_description;
+    private String conditionDescription;
     @NotNull
-    private String stem_description;
+    private String stemDescription;
     @NotNull
-    private String soil_moisture_description;
+    private String soilMoistureDescription;
 
 
-    public SowingControl(Sowing sowing, String condition_description, String stem_description, String soil_moisture_description) {
+    public SowingControl(Sowing sowing, String conditionDescription, String stemDescription, String soilMoistureDescription) {
         this.sowing = sowing;
-        this.condition_description = condition_description;
-        this.stem_description = stem_description;
-        this.soil_moisture_description = soil_moisture_description;
+        this.conditionDescription = conditionDescription;
+        this.stemDescription = stemDescription;
+        this.soilMoistureDescription = soilMoistureDescription;
     }
     public SowingControl(){
     }
 
     public void controlCreated() {
-        this.control_date = new Date();
+        this.controlDate = new Date();
     }
 }
