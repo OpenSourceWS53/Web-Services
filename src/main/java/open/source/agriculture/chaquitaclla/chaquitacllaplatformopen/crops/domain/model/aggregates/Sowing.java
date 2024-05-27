@@ -28,6 +28,10 @@ public class Sowing {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "crop_id")
+    private Crop crop;
+
     private PhenologicalPhase phenologicalPhase;
 
     public Sowing(){
