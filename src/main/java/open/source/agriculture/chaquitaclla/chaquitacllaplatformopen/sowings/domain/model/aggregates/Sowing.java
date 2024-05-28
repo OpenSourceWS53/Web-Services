@@ -1,11 +1,11 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Product;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects.PhenologicalPhase;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.Product;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.PhenologicalPhase;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
 import org.springframework.data.domain.AbstractAggregateRoot;

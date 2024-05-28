@@ -1,9 +1,9 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Sowing;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates.Sowing;
 
 import java.util.Date;
 

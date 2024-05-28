@@ -1,9 +1,9 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects.ProductType;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.valueobjects.ProductType;
 
 @Getter
 @Entity

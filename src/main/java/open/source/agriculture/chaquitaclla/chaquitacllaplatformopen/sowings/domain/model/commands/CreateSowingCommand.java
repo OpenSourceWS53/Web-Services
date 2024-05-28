@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 

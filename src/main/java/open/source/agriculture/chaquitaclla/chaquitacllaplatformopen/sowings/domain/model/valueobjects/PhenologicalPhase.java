@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects;
 
 public enum PhenologicalPhase
 {
