@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.doma
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.valueobjects.PhenologicalPhase;
 
-public record GetSowingsByPhenologicalPhase(PhenologicalPhase phase) {
+public record GetSowingsByPhenologicalPhaseQuery(PhenologicalPhase phase) {
 }

@@ -23,9 +23,14 @@ public class Disease {
     @Size(max = 500)
     private String Description;
 
-    public Disease(String Name, String Description){
+    @NotNull
+    @Size(max = 500)
+    private String Solution;
+
+    public Disease(String Name, String Description, String Solution){
         this.Name = Name;
         this.Description = Description;
+        this.Solution = Solution;
     }
     public Disease(){
     }

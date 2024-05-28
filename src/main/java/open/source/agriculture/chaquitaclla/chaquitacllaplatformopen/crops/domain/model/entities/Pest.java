@@ -23,9 +23,14 @@ public class Pest {
     @Size(max = 500)
     private String Description;
 
-    public Pest(String Name, String Description){
+    @NotNull
+    @Size(max = 500)
+    private String Solution;
+
+    public Pest(String Name, String Description, String Solution){
         this.Name = Name;
         this.Description = Description;
+        this.Solution = Solution;
     }
     public Pest(){
     }
