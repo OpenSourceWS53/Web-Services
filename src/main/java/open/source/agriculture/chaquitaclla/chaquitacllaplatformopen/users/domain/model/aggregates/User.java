@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.model.aggregates;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates;
 
 
 import jakarta.persistence.Entity;
