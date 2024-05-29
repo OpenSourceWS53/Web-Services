@@ -1,11 +1,9 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Question;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
