@@ -1,6 +1,6 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services;
 
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities.Answer;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Answer;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersByQuestionIdAndUserIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersByQuestionIdQuery;
 
