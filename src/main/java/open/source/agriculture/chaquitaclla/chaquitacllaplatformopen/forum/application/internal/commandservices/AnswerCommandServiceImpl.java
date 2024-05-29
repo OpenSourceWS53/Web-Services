@@ -1,7 +1,7 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.application.internal.commandservices;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.CreateAnswerCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities.Answer;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Answer;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services.AnswerCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.infrastructure.persistence.jpa.repositories.AnswerRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class AnswerCommandServiceImpl implements AnswerCommandService {
 
     @Override
     public Long handle(CreateAnswerCommand command) {
-        var answer = new Answer(command.user(),command.question(),command.answer());
+        var answer = new Answer(command.userId(),command.question(),command.answer());
         answerRepository.save(answer);
         return answer.getId();
     }
