@@ -2,8 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.model.aggregates.User;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,7 +13,6 @@ import java.util.Date;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "questions")
-@Getter
 public class Question extends AbstractAggregateRoot<Question> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +21,9 @@ public class Question extends AbstractAggregateRoot<Question> {
     @NotNull
     private String category;
 
-
-    @Embedded
-    private UserId userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotNull
     private String question;
@@ -39,20 +37,14 @@ public class Question extends AbstractAggregateRoot<Question> {
 
     public Question() {
         this.category = Strings.EMPTY;
-        this.userId = new UserId();
+        this.user = new User();
         this.question = Strings.EMPTY;
     }
 
-    public Question(String category, UserId userId, String question) {
+    public Question(String category, User user, String question) {
         this();
         this.category = category;
-        this.userId = userId;
+        this.user = user;
         this.question = question;
-    }
-
-    public Question updateInformation(String category, String question) {
-        this.category = category;
-        this.question = question;
-        return this;
     }
 }
