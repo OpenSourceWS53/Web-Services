@@ -43,10 +43,10 @@ public class Question extends AbstractAggregateRoot<Question> {
         this.question = Strings.EMPTY;
     }
 
-    public Question(String category, UserId userId, String question) {
+    public Question(String category, Long userId, String question) {
         this();
         this.category = category;
-        this.userId = userId;
+        this.userId = new UserId(userId);
         this.question = question;
     }
 
