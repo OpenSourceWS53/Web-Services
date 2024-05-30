@@ -16,6 +16,7 @@ import java.util.Set;
 @Entity
 public class Crop extends AbstractAggregateRoot<Crop> {
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
