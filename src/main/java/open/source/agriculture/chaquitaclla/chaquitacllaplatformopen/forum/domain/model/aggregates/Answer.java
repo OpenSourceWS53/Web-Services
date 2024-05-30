@@ -32,9 +32,9 @@ public class Answer extends AuditableModel {
         this.answer = Strings.EMPTY;
     }
 
-    public Answer(UserId userId, Question question, String answer){
+    public Answer(Long userId, Question question, String answer){
         this();
-        this.userId = userId;
+        this.userId = new UserId(userId);
         this.question = question;
         this.answer = answer;
     }
