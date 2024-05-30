@@ -1,15 +1,17 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.transform;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Question;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.CreateQuestionResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.QuestionResource;
 
 public class QuestionResourceFromEntityAssembler {
-    public static QuestionResource toResourceFromEntity(Question question) {
+    public static QuestionResource toResourceFromEntity(Question entity) {
         return new QuestionResource(
-                question.getId(),
-                question.getCategory(),
-                question.getUserId(),
-                question.getQuestion()
+                entity.getId(),
+                entity.getCategory(),
+                entity.getUserId().userId(),
+                entity.getQuestion()
         );
     }
+
 }

@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.inte
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 
-public record QuestionResource(Long id, String Category, UserId userId, String question) {
+public record QuestionResource(Long id,String Category, Long userId, String question) {
 }
