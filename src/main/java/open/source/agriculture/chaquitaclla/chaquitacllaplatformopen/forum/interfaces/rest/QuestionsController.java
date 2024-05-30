@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
-@RequestMapping("/api/v1/questions")
+@RequestMapping(value = "/api/v1/questions", produces = APPLICATION_JSON_VALUE)
 public class QuestionsController {
     private final QuestionCommandService questionCommandService;
     private final QuestionQueryService questionQueryService;
@@ -33,8 +33,8 @@ public class QuestionsController {
     }
 
     @PostMapping
-    public ResponseEntity<QuestionResource> createQuestion(@RequestBody CreateQuestionResource createQuestionResource) {
-        var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(createQuestionResource);
+    public ResponseEntity<QuestionResource> createQuestion( @RequestBody CreateQuestionResource resource) {
+        var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(resource);
         var questionId = questionCommandService.handle(createQuestionCommand);
         if(questionId == 0L) return ResponseEntity.badRequest().build();
         var getQuestionByIdQuery = new GetQuestionByIdQuery(questionId);

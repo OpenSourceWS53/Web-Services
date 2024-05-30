@@ -28,7 +28,7 @@ public class QuestionQueryServiceImpl implements QuestionQueryService {
 
     @Override
     public List<Question> handle(GetAllQuestionsByUserIdQuery query) {
-        return questionRepository.findByUserId(query.userId());
+        return questionRepository.findByUserId(query.userId());    
     }
 
     @Override
