@@ -4,5 +4,5 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domai
 
 
 
-public record CreateAnswerCommand(Long userId, Question question, String answer) {
+public record CreateAnswerCommand(Long userId, Long questionId, String answer) {
 }
