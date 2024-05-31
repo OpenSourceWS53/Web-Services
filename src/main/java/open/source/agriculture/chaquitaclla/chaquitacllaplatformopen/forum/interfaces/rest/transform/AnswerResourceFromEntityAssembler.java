@@ -2,7 +2,6 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.inte
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Answer;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.AnswerResource;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.QuestionResource;
 
 public class AnswerResourceFromEntityAssembler {
     public static AnswerResource toResourceFromEntity(Answer entity) {
