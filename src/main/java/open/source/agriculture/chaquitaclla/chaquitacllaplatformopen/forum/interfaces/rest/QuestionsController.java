@@ -1,9 +1,11 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.DeleteQuestionCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllQuestionsByUserIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllQuestionsQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetQuestionByIdQuery;
 
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services.QuestionCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services.QuestionQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.CreateQuestionResource;
@@ -76,6 +78,17 @@ public class QuestionsController {
         var question = questionQueryService.handle(getQuestionByIdQuery);
         if(question.isEmpty()) return ResponseEntity.badRequest().build();
         var questionResource = QuestionResourceFromEntityAssembler.toResourceFromEntity(question.get());
+        return ResponseEntity.ok(questionResource);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<QuestionResource>> getAllQuestionsByUserId(@RequestHeader("userId") Long userId){
+        var IdUser = new UserId(userId);
+        var getQuestionsByUserIdQuery = new GetAllQuestionsByUserIdQuery(IdUser);
+        var questions = questionQueryService.handle(getQuestionsByUserIdQuery);
+        var questionResource = questions.stream()
+                .map(QuestionResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
         return ResponseEntity.ok(questionResource);
     }
 }
