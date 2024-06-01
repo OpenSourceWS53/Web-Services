@@ -32,9 +32,9 @@ public class QuestionsController {
         this.questionQueryService = questionQueryService;
     }
 
-    @PostMapping
-    public ResponseEntity<QuestionResource> createQuestion( @RequestBody CreateQuestionResource resource) {
-        var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(resource);
+    @PostMapping("/")
+    public ResponseEntity<QuestionResource> createQuestion(@RequestHeader("userId") Long userId, @RequestBody CreateQuestionResource resource) {
+        var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(userId,resource);
         var questionId = questionCommandService.handle(createQuestionCommand);
         if(questionId == 0L) return ResponseEntity.badRequest().build();
         var getQuestionByIdQuery = new GetQuestionByIdQuery(questionId);
@@ -60,7 +60,7 @@ public class QuestionsController {
         return ResponseEntity.ok("Question with given id successfully deleted.");
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<QuestionResource>> getAllQuestions(){
         var getAllQuestionsQuery = new GetAllQuestionsQuery();
         var questions = questionQueryService.handle(getAllQuestionsQuery);
