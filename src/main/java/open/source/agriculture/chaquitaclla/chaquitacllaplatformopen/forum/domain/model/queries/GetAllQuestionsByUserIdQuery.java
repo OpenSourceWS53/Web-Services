@@ -1,5 +1,7 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries;
 
 
-public record GetAllQuestionsByUserIdQuery(Long userId) {
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
+
+public record GetAllQuestionsByUserIdQuery(UserId userId) {
 }
