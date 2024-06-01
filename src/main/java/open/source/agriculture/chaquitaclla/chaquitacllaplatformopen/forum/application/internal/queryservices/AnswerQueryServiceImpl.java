@@ -2,7 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.appl
 
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Answer;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersByQuestionIdAndUserIdQuery;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersByQuestionIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAnswerByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services.AnswerQueryService;
@@ -27,8 +27,8 @@ public class AnswerQueryServiceImpl implements AnswerQueryService {
     }
 
     @Override
-    public List<Answer> handle(GetAllAnswersByQuestionIdAndUserIdQuery query) {
-       return answerRepository.findByQuestionIdAndUserId(query.questionId(), query.userId());
+    public List<Answer> handle(GetAllAnswersQuery query) {
+       return answerRepository.findAll();
     }
 
     @Override

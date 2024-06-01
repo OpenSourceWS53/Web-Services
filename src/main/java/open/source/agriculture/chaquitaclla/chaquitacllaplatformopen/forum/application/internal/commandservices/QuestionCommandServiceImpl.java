@@ -29,9 +29,8 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
 
     @Override
     public Optional<Question> handle(UpdateQuestionCommand command) {
-        if(!questionRepository.existsById(command.questionId())){
+        if(!questionRepository.existsById(command.questionId()))
             throw new IllegalArgumentException("Question does not exist");
-        }
         var questionToUpdate = questionRepository.findById(command.questionId()).get();
         var updateQuestion = questionRepository.save(questionToUpdate.updateInformation(command.category(),command.question()));
         return Optional.of(updateQuestion);
