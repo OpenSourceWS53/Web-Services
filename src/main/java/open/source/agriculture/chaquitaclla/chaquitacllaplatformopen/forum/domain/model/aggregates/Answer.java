@@ -38,4 +38,9 @@ public class Answer extends AuditableModel {
         this.question = question;
         this.answer = answer;
     }
+
+    public Answer updateInformation(String answer){
+        this.answer = answer;
+        return this;
+    }
 }
