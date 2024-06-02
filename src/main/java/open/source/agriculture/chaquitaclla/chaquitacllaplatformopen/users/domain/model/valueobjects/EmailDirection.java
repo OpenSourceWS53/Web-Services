@@ -9,19 +9,13 @@ public record EmailDirection(String email) {
     public EmailDirection(){
         this(null);
     }
-    //Validation con @ y un alongitud mayor a 5
-    public void validate() {
+
+    public  EmailDirection(String email) {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email is required");
         }
-        if (!email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
-            throw new IllegalArgumentException("Email is invalid");
-        }
+        this.email = email;
     }
-    //Methods
-    @Email
-    public String email() {
 
-        return email;
-    }
+
 }

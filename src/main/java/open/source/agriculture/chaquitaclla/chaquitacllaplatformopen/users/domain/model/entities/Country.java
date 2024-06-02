@@ -7,8 +7,16 @@ public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="name",nullable = false)
+
     private String name;
+
+    //contructor
+    public Country() {
+    }
+    public Country(String name) {
+        this.name = name;
+    }
+
     //Getters and Setters
     public Long getId() {
         return id;

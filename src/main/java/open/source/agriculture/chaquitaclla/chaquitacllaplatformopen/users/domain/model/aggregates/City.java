@@ -10,11 +10,22 @@ public class City extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name",nullable = false)
+
     private String name;
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
+
+    //contructor
+    public City() {
+    }
+    public City(String name, Country country) {
+        this.name = name;
+        this.country = country;
+    }
+
+
+
     //Getters and Setters
     public Long getId() {
         return id;

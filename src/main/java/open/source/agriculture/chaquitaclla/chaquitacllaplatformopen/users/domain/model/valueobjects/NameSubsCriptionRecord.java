@@ -3,23 +3,21 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.doma
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public record NameSubsCriptionRecord(String subscriptionName, Integer subscriptionType) {
+public record NameSubsCriptionRecord(String subscriptionName) {
     //Constructor
     public NameSubsCriptionRecord(){
-        this(null, 1);
+        this(null);
     }
     //Validation
     public void validate() {
         if (subscriptionName == null || subscriptionName.isBlank()) {
             throw new IllegalArgumentException("Subscription name is required");
         }
-        if (subscriptionType == null || subscriptionType < 1 || subscriptionType > 3) {
-            throw new IllegalArgumentException("Subscription type is required");
-        }
+
     }
     //Methods
-    public String fullName() {
-        return subscriptionName + " " + subscriptionType;
+    public String describeName() {
+        return subscriptionName ;
     }
 
 }
