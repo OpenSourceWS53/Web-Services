@@ -30,7 +30,7 @@ public class Disease {
 
     @ManyToMany
     @JoinTable(
-            name = "crop_disease",
+            name = "crop_diseases",
             joinColumns = @JoinColumn(name = "disease_id"),
             inverseJoinColumns = @JoinColumn(name = "crop_id")
     )
