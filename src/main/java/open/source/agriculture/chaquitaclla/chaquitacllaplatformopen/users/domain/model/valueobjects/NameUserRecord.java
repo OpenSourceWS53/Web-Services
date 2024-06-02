@@ -1,5 +1,8 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record NameUserRecord(String firstName, String lastName) {
     //Constructor
     public NameUserRecord(){

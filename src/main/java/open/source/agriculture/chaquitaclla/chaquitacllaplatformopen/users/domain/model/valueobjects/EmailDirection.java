@@ -1,7 +1,9 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects;
 
+import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Email;
 
+@Embeddable
 public record EmailDirection(String email) {
     //Constructor
     public EmailDirection(){

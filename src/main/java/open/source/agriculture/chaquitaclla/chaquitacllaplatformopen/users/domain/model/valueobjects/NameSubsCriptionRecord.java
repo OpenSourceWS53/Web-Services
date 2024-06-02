@@ -1,5 +1,8 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record NameSubsCriptionRecord(String subscriptionName, Integer subscriptionType) {
     //Constructor
     public NameSubsCriptionRecord(){
