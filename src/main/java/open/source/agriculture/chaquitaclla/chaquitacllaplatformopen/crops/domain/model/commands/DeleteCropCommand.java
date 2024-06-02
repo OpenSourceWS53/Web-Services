@@ -1,4 +1,4 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands;
 
-public record EndSowingCommand(Long sowingId) {
+public record DeleteCropCommand(Long cropId) {
 }
