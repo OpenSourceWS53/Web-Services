@@ -1,15 +1,16 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 
-@Entity
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
+@Entity
 public class Pest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,14 @@ public class Pest {
     @NotNull
     @Size(max = 500)
     private String Solution;
+
+    @ManyToMany
+    @JoinTable(
+            name = "crop_pest",
+            joinColumns = @JoinColumn(name = "pest_id"),
+            inverseJoinColumns = @JoinColumn(name = "crop_id")
+    )
+    private Set<Crop> crops = new HashSet<>();
 
     public Pest(String Name, String Description, String Solution){
         this.Name = Name;

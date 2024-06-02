@@ -76,4 +76,12 @@ public class Crop extends AbstractAggregateRoot<Crop> {
         this.pests.addAll(pests);
         return this;
     }
+
+    public String getName() {
+        return this.Name;
+    }
+
+    public String getDescription() {
+        return this.Description;
+    }
 }
