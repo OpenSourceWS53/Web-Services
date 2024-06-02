@@ -1,6 +1,7 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.Country;
 
@@ -12,6 +13,8 @@ public class City extends AuditableModel {
     private Long id;
 
     private String name;
+
+
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;

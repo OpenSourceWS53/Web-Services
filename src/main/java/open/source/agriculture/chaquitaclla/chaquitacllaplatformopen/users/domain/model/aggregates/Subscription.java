@@ -47,4 +47,22 @@ public class Subscription {
                 ", price=" + price +
                 '}';
     }
+    //Getters id-name-description-price
+    public Long getId() {
+        return id;
+    }
+    public NameSubsCriptionRecord getName() {
+        return name;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public Double getPrice() {
+        return price;
+    }
+
+
+
+
+
 }

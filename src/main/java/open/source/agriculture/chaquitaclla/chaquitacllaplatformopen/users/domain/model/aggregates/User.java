@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameUserRecord;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.EmailDirection;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.Password;
@@ -17,12 +18,9 @@ public class User extends AbstractAggregateRoot<User> {
     private Long id;
 
     @Embedded
-    @AttributeOverride(name = "subscriptionName", column = @Column(name = "firstName"))
-    private NameUserRecord firstName;
+    private NameUserRecord name;
 
-    @Embedded
-    @AttributeOverride(name = "subscriptionName", column = @Column(name = "lastName"))
-    private NameUserRecord lastName;
+
 
     @Embedded
     @Email
@@ -33,42 +31,43 @@ public class User extends AbstractAggregateRoot<User> {
     @AttributeOverride(name = "password",column = @Column(name = "password"))
     private Password password;
 
-    @Getter
+
     @ManyToOne
     private City city;
 
-    @Getter
+
     @ManyToOne
     private Subscription subscription;
-
+    @CreatedDate
     private Date star_date;
+    @CreatedDate
     private Date end_date;
 
 
     public User() {
     }
 
-    public User(NameUserRecord firstName,NameUserRecord  lastName, EmailDirection email, Password password) {
-        firstName.validate();
-        lastName.validate();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+    public User(String firstName,String  lastName, String email, String password) {
+        this.name = new NameUserRecord(firstName,lastName);
+        this.email = new EmailDirection(email);
+        this.password = new Password(password);
     }
-    public String getFirstName() {
-        return firstName.firstName();
-    }
-    public String getLastName() {
-        return lastName.lastName();
-    }
+    
     public Long getId() {
         return id;
     }
-    public EmailDirection getEmail() {
-        return email;
+    public void updateName(String firstName, String lastName) {
+        this.name = new NameUserRecord(firstName, lastName);
     }
-    public Password getPassword() {
-        return password;
+    public String getFullName(){
+        return this.name.fullName();
     }
+
+    public Date getStar_date() {
+        return star_date;
+    }
+    public Date getEnd_date() {
+        return end_date;
+    }
+
 }
