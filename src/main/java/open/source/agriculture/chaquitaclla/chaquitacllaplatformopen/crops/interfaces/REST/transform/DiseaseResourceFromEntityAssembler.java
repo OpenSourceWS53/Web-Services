@@ -5,7 +5,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 
 public class DiseaseResourceFromEntityAssembler {
 
-    public DiseaseResource toResource(Disease entity) {
+    public static DiseaseResource toResourceFromEntity(Disease entity) {
         return new DiseaseResource(
                 entity.getId(),
                 entity.getName(),

@@ -33,8 +33,6 @@ public class CropCommandServiceImpl implements CropCommandService {
         return cropRepository.findById(command.cropId()).map(existingCrop -> {
             existingCrop.setName(command.name());
             existingCrop.setDescription(command.description());
-            existingCrop.addDiseases(command.diseases());
-            existingCrop.addPests(command.pests());
             return cropRepository.save(existingCrop);
         });
     }

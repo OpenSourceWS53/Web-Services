@@ -9,12 +9,4 @@ public record UpdateCropCommand(Long cropId, String name, String description) {
     public Long cropId() {
         return cropId;
     }
-
-    public Set<Disease> diseases() {
-        return diseases();
-    }
-
-    public Set<Pest> pests() {
-        return pests();
-    }
 }

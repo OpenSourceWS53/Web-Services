@@ -7,7 +7,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CropResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.UpdateCropResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CropResourceFromEntityAssembler;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.UpdateCropCommandFromResourceAssembler;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.DeleteCropCommand;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +52,24 @@ public class CropController {
         var crops = cropQueryService.handle(getAllCropsQuery);
         var cropResources = crops.stream().map(CropResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(cropResources);
+    }
+
+    @PutMapping("/{cropId}")
+    public ResponseEntity<CropResource> updateCrop(@PathVariable Long cropId, @RequestBody UpdateCropResource updateCropResource) {
+        var updateCropCommand = UpdateCropCommandFromResourceAssembler.toCommandFromResource(cropId, updateCropResource);
+        var updatedCrop = cropCommandService.handle(updateCropCommand);
+        if (updatedCrop.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var cropResource = CropResourceFromEntityAssembler.toResourceFromEntity(updatedCrop.get());
+        return ResponseEntity.ok(cropResource);
+    }
+
+    @DeleteMapping("/{cropId}")
+    public ResponseEntity<?> deleteCrop(@PathVariable Long cropId) {
+        var deleteCropCommand = new DeleteCropCommand(cropId);
+        cropCommandService.handle(deleteCropCommand);
+        return ResponseEntity.ok("Crop with given id successfully deleted");
     }
 
 }

@@ -1,42 +1,50 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST;
 
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CropRepository;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.DiseaseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateDiseaseCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetAllDiseasesQuery;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetDiseasesByCropIdQuery;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.DiseaseResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.DiseaseResourceFromEntityAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/disease")
+@RequestMapping(value = "/api/disease")
 public class DiseaseController {
-    @Autowired
-    private DiseaseRepository diseaseRepository;
 
-    @Autowired
-    private CropRepository cropRepository;
+    private final DiseaseCommandService diseaseCommandService;
+    private final DiseaseQueryService diseaseQueryService;
 
-    @PostMapping(value = "/createDisease")
-    public String createDisease(@RequestBody Disease entity) {
-        Disease disease = new Disease(entity.getName(), entity.getDescription(), entity.getSolution());
-        disease = diseaseRepository.save(disease);
-        return "Disease saved!!!";
+    public DiseaseController(DiseaseCommandService diseaseCommandService, DiseaseQueryService diseaseQueryService) {
+        this.diseaseCommandService = diseaseCommandService;
+        this.diseaseQueryService = diseaseQueryService;
     }
 
-    @PostMapping(value = "/addDiseaseToCrop/{cropId}")
-    public String addDiseaseToCrop(@RequestBody Disease entity,
-                                   @PathVariable(name = "cropId") Long cropId) {
-        Crop crop = cropRepository.getById(cropId);
-        Disease disease = new Disease(entity.getName(), entity.getDescription(), entity.getSolution());
-        disease = diseaseRepository.save(disease);
-        crop.addDisease(disease);
-        crop = cropRepository.save(crop);
-        return "Disease added to Crop!!!";
+    @PostMapping
+    public ResponseEntity<DiseaseResource> createDisease(@RequestBody CreateDiseaseCommand command) {
+        Long diseaseId = diseaseCommandService.handle(command);
+        DiseaseResource diseaseResource = new DiseaseResource(diseaseId, command.name(), command.description(), command.solution());
+        return new ResponseEntity<>(diseaseResource, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/getDisease/{diseaseId}")
-    public String getDisease(@PathVariable(name = "diseaseId") Integer diseaseId) {
-        Disease disease = diseaseRepository.getById(diseaseId);
-        return "Disease fetched successfully!!!";
+    @GetMapping("/{id}")
+    public ResponseEntity<DiseaseResource> getDisease(@PathVariable Long id) {
+        return diseaseQueryService.handle(new GetDiseasesByCropIdQuery(id))
+                .map(disease -> new DiseaseResource(disease.getId(), disease.getName(), disease.getDescription(), disease.getSolution()))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DiseaseResource>> getAllDiseases() {
+        var getAllDiseasesQuery = new GetAllDiseasesQuery();
+        var diseases = diseaseQueryService.handle(getAllDiseasesQuery);
+        var diseaseResources = diseases.stream().map(DiseaseResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(diseaseResources);
     }
 }
