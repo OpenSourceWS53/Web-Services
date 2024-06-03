@@ -3,6 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.doma
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -15,15 +16,18 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Crop extends AbstractAggregateRoot<Crop> {
+    @Getter
     @Id
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @NotNull
     @Size(max = 500)
     private String Description;
 
+    @Getter
     @NotNull
     @Size(max = 30)
     private String Name;
@@ -47,15 +51,20 @@ public class Crop extends AbstractAggregateRoot<Crop> {
         pests = new HashSet<>();
     }
 
-    public Crop(String name,String description){
+    public Crop(String name, String description, Set<Disease> diseases, Set<Pest> pests){
         this();
         this.Name = name;
         this.Description = description;
+        this.diseases = diseases;
+        this.pests = pests;
     }
-    public Crop(String name, String description, List<Disease> diseases, List<Pest> pests){
-        this(name, description);
-        addDiseases(diseases);
-        addPests(pests);
+
+    public Crop(String name, String description, List<Long> diseases, List<Long> pests) {
+        this();
+        this.Name = name;
+        this.Description = description;
+        this.diseases = new HashSet<>();
+        this.pests = new HashSet<>();
     }
 
     public Crop addDisease(Disease disease) {
@@ -68,21 +77,25 @@ public class Crop extends AbstractAggregateRoot<Crop> {
         return this;
     }
 
-    public Crop addDiseases(List<Disease> diseases) {
+    public Crop addDiseases(Set<Disease> diseases) {
         this.diseases.addAll(diseases);
         return this;
     }
 
-    public Crop addPests(List<Pest> pests) {
+    public Crop addPests(Set<Pest> pests) {
         this.pests.addAll(pests);
         return this;
     }
 
-    public String getName() {
-        return this.Name;
+    public Crop setName(String name) {
+        this.Name = name;
+        return this;
     }
 
-    public String getDescription() {
-        return this.Description;
+    public Crop setDescription(String description) {
+        this.Description = description;
+        return this;
     }
+
+
 }

@@ -1,56 +1,54 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST;
 
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreateCropResource;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CropResource;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreateCropSourceCommandFromResourceAssembler;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CropResourceFromEntityAssembler;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateCropCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CropRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateCropCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetAllCropsQuery;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetCropByIdQuery;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CropResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CropResourceFromEntityAssembler;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
-@RequestMapping("/api/v1/crops")
+@RequestMapping(value = "/api/v1/crops")
 public class CropController {
 
-    @Autowired
-    private CropRepository cropRepository;
+    private final CropCommandService cropCommandService;
+    private final CropQueryService cropQueryService;
 
-    @Autowired
-    private CreateCropSourceCommandFromResourceAssembler createCropSourceCommandFromResourceAssembler;
-
-    @Autowired
-    private CropResourceFromEntityAssembler cropResourceFromEntityAssembler;
+    public CropController(CropCommandService cropCommandService, CropQueryService cropQueryService) {
+        this.cropCommandService = cropCommandService;
+        this.cropQueryService = cropQueryService;
+    }
 
     @PostMapping
-    public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropResource resource) throws URISyntaxException {
-        CreateCropCommand createCropCommand = createCropSourceCommandFromResourceAssembler.toCommand(resource);
-        Crop crop = new Crop(createCropCommand.name(), createCropCommand.description(), createCropCommand.diseases(), createCropCommand.pests());
-        crop = cropRepository.save(crop);
-        CropResource cropResource = cropResourceFromEntityAssembler.toResource(crop);
-        return ResponseEntity.created(new URI("/api/v1/crops/" + cropResource.id())).body(cropResource);
+    public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropCommand command) {
+        Long cropId = cropCommandService.handle(command);
+        CropResource cropResource = new CropResource(cropId, command.name(), command.description());
+        return new ResponseEntity<>(cropResource, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CropResource> getCropById(@PathVariable Long id) {
-        Crop crop = cropRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Crop not found with id " + id));
-        CropResource cropResource = cropResourceFromEntityAssembler.toResource(crop);
-        return ResponseEntity.ok(cropResource);
+    public ResponseEntity<CropResource> getCrop(@PathVariable Long id) {
+        return cropQueryService.handle(new GetCropByIdQuery(id))
+                .map(crop -> new CropResource(crop.getId(), crop.getName(), crop.getDescription()))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
     public ResponseEntity<List<CropResource>> getAllCrops() {
-        List<Crop> crops = cropRepository.findAll();
-        List<CropResource> cropResources = crops.stream()
-                .map(cropResourceFromEntityAssembler::toResource)
-                .collect(Collectors.toList());
+        var getAllCropsQuery = new GetAllCropsQuery();
+        var crops = cropQueryService.handle(getAllCropsQuery);
+        var cropResources = crops.stream().map(CropResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(cropResources);
     }
+
 }
