@@ -41,6 +41,7 @@ public class SowingControl {
         this.sowingCondition = sowingCondition;
         this.sowingSoilMoisture = sowingSoilMoisture;
         this.sowingStemCondition= sowingStemCondition;
+        controlCreated();
     }
     public SowingControl(){
     }

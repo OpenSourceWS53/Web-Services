@@ -2,6 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.ap
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates.Sowing;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.CreateSowingControlCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.DeleteSowingControlBySowingIdCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.entities.SowingControl;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingControlCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.infrastructure.persistence.jpa.repositories.SowingControlRepository;
@@ -27,5 +28,12 @@ public class SowingControlCommandServiceImpl implements SowingControlCommandServ
         var sowingControl = new SowingControl(sowing, command.sowingCondition(), command.sowingSoilMoisture(), command.sowingStemCondition());
         sowingControlsRepository.save(sowingControl);
         return sowingControl.getId();
+    }
+    @Override
+    public void handle(DeleteSowingControlBySowingIdCommand command) {
+        if (!sowingControlsRepository.existsById(command.sowingControlId()))
+            throw new IllegalArgumentException("Sowing Control does not exist");
+
+        sowingControlsRepository.deleteById(command.sowingControlId());
     }
 }

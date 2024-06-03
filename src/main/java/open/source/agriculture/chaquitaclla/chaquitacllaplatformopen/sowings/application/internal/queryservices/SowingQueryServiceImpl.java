@@ -34,4 +34,5 @@ public class SowingQueryServiceImpl implements SowingQueryService {
     public List<Sowing> handle(GetSowingsByPhenologicalPhaseQuery query) {
         return sowingRepository.findByPhenologicalPhase(query.phase());
     }
+
 }

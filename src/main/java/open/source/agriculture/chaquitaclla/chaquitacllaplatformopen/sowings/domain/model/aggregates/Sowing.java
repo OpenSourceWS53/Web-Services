@@ -7,16 +7,14 @@ import lombok.Setter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.Product;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.entities.SowingControl;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.CropId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.PhenologicalPhase;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.ProfileId;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,10 +45,9 @@ public class Sowing extends AbstractAggregateRoot<Sowing> {
     @OneToMany(mappedBy = "sowing", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SowingControl> sowingControls;
 
+    @Embedded
+    private CropId cropId;
 
-    @ManyToOne
-    @JoinColumn(name = "crop_id")
-    private Crop crop;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "sowing_products",
@@ -60,6 +57,17 @@ public class Sowing extends AbstractAggregateRoot<Sowing> {
 
     private PhenologicalPhase phenologicalPhase;
 
+
+    public CropId getCropId() {
+        return cropId;
+    }
+
+    public ProfileId getProfileId() {
+        return profileId;
+    }
+    protected Sowing() {
+
+    }
     public Sowing(DateRange dateRange, int areaLand, ProfileId profileId){
         this.dateRange = dateRange;
         this.areaLand = areaLand;

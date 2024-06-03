@@ -6,9 +6,11 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.UpdateSowingCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.infrastructure.persistence.jpa.repositories.SowingRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class SowingCommandServiceImpl implements SowingCommandService {
     private final SowingRepository sowingRepository;
 
@@ -17,7 +19,7 @@ public class SowingCommandServiceImpl implements SowingCommandService {
     }
     @Override
     public Long handle(CreateSowingCommand command) {
-        var sowing = new Sowing(command.dateRange(), command.cropId().intValue(), command.profileId());
+        var sowing = new Sowing(command.dateRange(), command.cropId().cropId().intValue(), command.profileId());
         sowingRepository.save(sowing);
         return sowing.getId();
     }

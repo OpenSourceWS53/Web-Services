@@ -1,15 +1,15 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.CreateSowingControlCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.SowingControlResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.CreateSowingControlResource;
 
 public class CreateSowingControlCommandFromResourceAssembler {
-    public static CreateSowingControlCommand fromResource(SowingControlResource resource) {
+    public static CreateSowingControlCommand fromResource(Long sowingId, CreateSowingControlResource resource) {
         return new CreateSowingControlCommand(
-                resource.SowingId(),
+                sowingId,
                 resource.sowingCondition(),
-                resource.sowingStemCondition(),
-                resource.sowingSoilMoisture()
+                resource.sowingSoilMoisture(),
+                resource.sowingStemCondition()
         );
     }
 }
