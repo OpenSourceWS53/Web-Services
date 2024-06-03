@@ -31,8 +31,8 @@ public class Pest {
     @ManyToMany
     @JoinTable(
             name = "crop_pests",
-            joinColumns = @JoinColumn(name = "pest_id"),
-            inverseJoinColumns = @JoinColumn(name = "crop_id")
+            joinColumns = @JoinColumn(name = "pest_id", foreignKey = @ForeignKey(name = "fk_crop_pests_pest")),
+            inverseJoinColumns = @JoinColumn(name = "crop_id", foreignKey = @ForeignKey(name = "fk_crop_pests_crop"))
     )
     private Set<Crop> crops = new HashSet<>();
 

@@ -5,5 +5,5 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 
 import java.util.List;
 
-public record CreateCropCommand(String name, String description, List<Disease> diseases, List<Pest> pests) {
+public record CreateCropCommand(String name, String description, List<Long> diseases, List<Long> pests) {
 }

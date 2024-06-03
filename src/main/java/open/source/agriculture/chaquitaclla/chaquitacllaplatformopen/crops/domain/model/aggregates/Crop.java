@@ -30,16 +30,17 @@ public class Crop extends AbstractAggregateRoot<Crop> {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "crop_diseases",
-            joinColumns = @JoinColumn(name = "crop_id"),
-            inverseJoinColumns = @JoinColumn(name = "disease_id"))
+            joinColumns = @JoinColumn(name = "crop_id", foreignKey = @ForeignKey(name = "fk_crop_diseases_crop")),
+            inverseJoinColumns = @JoinColumn(name = "disease_id", foreignKey = @ForeignKey(name = "fk_crop_diseases_disease"))
+    )
     private Set<Disease> diseases;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "crop_pests",
-            joinColumns = @JoinColumn(name = "crop_id"),
-            inverseJoinColumns = @JoinColumn(name = "pest_id"))
+            joinColumns = @JoinColumn(name = "crop_id", foreignKey = @ForeignKey(name = "fk_crop_pests_crop")),
+            inverseJoinColumns = @JoinColumn(name = "pest_id", foreignKey = @ForeignKey(name = "fk_crop_pests_pest"))
+    )
     private Set<Pest> pests;
-
 
     public Crop(){
         diseases = new HashSet<>();
