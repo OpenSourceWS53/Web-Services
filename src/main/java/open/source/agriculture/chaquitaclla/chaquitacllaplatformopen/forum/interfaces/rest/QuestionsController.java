@@ -1,5 +1,6 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.DeleteQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllQuestionsByUserIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllQuestionsQuery;
@@ -24,7 +25,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
-@RequestMapping(value = "/api/v1/questions", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/forum/questions", produces = APPLICATION_JSON_VALUE)
+@Tag(name = "Questions", description = "Questions Management Endpoints")
 public class QuestionsController {
     private final QuestionCommandService questionCommandService;
     private final QuestionQueryService questionQueryService;
@@ -34,7 +36,7 @@ public class QuestionsController {
         this.questionQueryService = questionQueryService;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<QuestionResource> createQuestion(@RequestHeader("userId") Long userId, @RequestBody CreateQuestionResource resource) {
         var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(userId,resource);
         var questionId = questionCommandService.handle(createQuestionCommand);
@@ -62,7 +64,7 @@ public class QuestionsController {
         return ResponseEntity.ok("Question with given id successfully deleted.");
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<QuestionResource>> getAllQuestions(){
         var getAllQuestionsQuery = new GetAllQuestionsQuery();
         var questions = questionQueryService.handle(getAllQuestionsQuery);
@@ -81,8 +83,8 @@ public class QuestionsController {
         return ResponseEntity.ok(questionResource);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<QuestionResource>> getAllQuestionsByUserId(@RequestHeader("userId") Long userId){
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<QuestionResource>> getAllQuestionsByUserId(@PathVariable Long userId){
         var IdUser = new UserId(userId);
         var getQuestionsByUserIdQuery = new GetAllQuestionsByUserIdQuery(IdUser);
         var questions = questionQueryService.handle(getQuestionsByUserIdQuery);

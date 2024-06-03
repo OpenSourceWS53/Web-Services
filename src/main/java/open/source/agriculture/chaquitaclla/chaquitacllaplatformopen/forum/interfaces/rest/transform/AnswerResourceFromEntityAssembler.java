@@ -8,7 +8,7 @@ public class AnswerResourceFromEntityAssembler {
         return new AnswerResource(
                 entity.getId(),
                 entity.getUserId().userId(),
-                entity.getQuestion(),
+                entity.getQuestion().getId(),
                 entity.getAnswer()
         );
 

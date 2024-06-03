@@ -4,10 +4,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.CreateAnswerResource;
 
 public class CreateAnswerCommandFromResourceAssembler {
-    public static CreateAnswerCommand toCommandFromResource(CreateAnswerResource resource){
+    public static CreateAnswerCommand toCommandFromResource(Long userId, Long questionId,CreateAnswerResource resource){
         return new CreateAnswerCommand(
-                resource.userId(),
-                resource.questionId(),
+                userId,
+                questionId,
                 resource.answer()
         );
 

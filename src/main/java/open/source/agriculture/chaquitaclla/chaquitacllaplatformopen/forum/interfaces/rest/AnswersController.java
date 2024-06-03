@@ -1,5 +1,6 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.DeleteAnswerCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersByQuestionIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries.GetAllAnswersQuery;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/answers")
+@RequestMapping(value = "/api/v1/forum/answers")
+@Tag(name = "Answers", description = "Answers Management Endpoints")
 public class AnswersController {
     private final AnswerCommandService answerCommandService;
     private final AnswerQueryService answerQueryService;
@@ -29,8 +31,8 @@ public class AnswersController {
     }
 
     @PostMapping
-    public ResponseEntity<AnswerResource> createAnswer(@RequestBody CreateAnswerResource resource){
-        var createAnswerCommand = CreateAnswerCommandFromResourceAssembler.toCommandFromResource(resource);
+    public ResponseEntity<AnswerResource> createAnswer(@RequestHeader Long userId,@RequestHeader Long questionId ,@RequestBody CreateAnswerResource resource){
+        var createAnswerCommand = CreateAnswerCommandFromResourceAssembler.toCommandFromResource(userId, questionId, resource);
         var answerId = answerCommandService.handle(createAnswerCommand);
         if(answerId == 0L) return ResponseEntity.badRequest().build();
         var getAnswerByIdQuery = new GetAnswerByIdQuery(answerId);
