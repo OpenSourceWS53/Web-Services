@@ -23,10 +23,10 @@ public class SowingCommandServiceImpl implements SowingCommandService {
     }
     @Override
     public Optional<Sowing> handle(UpdateSowingCommand command) {
-        if (!sowingRepository.existsById(command.sowingId()))
+        if (!sowingRepository.existsById(command.Id()))
             throw new IllegalArgumentException("Sowing does not exist");
 
-        var sowingToUpdate = sowingRepository.findById(command.sowingId()).get();
+        var sowingToUpdate = sowingRepository.findById(command.Id()).get();
 
 
         sowingToUpdate.setDateRange(command.dateRange());
