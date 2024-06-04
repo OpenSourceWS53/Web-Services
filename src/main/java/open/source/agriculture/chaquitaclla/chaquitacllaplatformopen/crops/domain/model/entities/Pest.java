@@ -16,6 +16,9 @@ public class Pest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
+    private final Long cropId;
+
     @NotNull
     @Size(max = 30)
     private String Name;
@@ -36,11 +39,14 @@ public class Pest {
     )
     private Set<Crop> crops = new HashSet<>();
 
-    public Pest(String Name, String Description, String Solution){
+    public Pest(String Name, String Description, String Solution, Long cropId){
         this.Name = Name;
         this.Description = Description;
         this.Solution = Solution;
+        this.cropId = cropId;
     }
     public Pest(){
+        this.cropId = null;
     }
+
 }

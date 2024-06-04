@@ -1,42 +1,68 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CropRepository;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreatePestCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.*;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.PestCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.PestQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.PestResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.PestResourceFromEntityAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/pest")
+@RequestMapping(value = "/api/v1/pests")
 public class PestController {
-    @Autowired
-    private PestRepository pestRepository;
 
-    @Autowired
-    private CropRepository cropRepository;
+    private final PestCommandService pestCommandService;
+    private final PestQueryService pestQueryService;
+    private final CropQueryService cropQueryService;
+    private final CropCommandService cropCommandService;
 
-    @PostMapping(value = "/createPest")
-    public String createPest(@RequestBody Pest entity) {
-        Pest pest = new Pest(entity.getName(), entity.getDescription(), entity.getSolution());
-        pest = pestRepository.save(pest);
-        return "Pest saved!!!";
+    public PestController(PestCommandService pestCommandService, PestQueryService pestQueryService, CropQueryService cropQueryService, CropCommandService cropCommandService) {
+        this.pestCommandService = pestCommandService;
+        this.pestQueryService = pestQueryService;
+        this.cropQueryService = cropQueryService;
+        this.cropCommandService = cropCommandService;
     }
 
-    @PostMapping(value = "/addPestToCrop/{cropId}")
-    public String addPestToCrop(@RequestBody Pest entity,
-                                @PathVariable(name = "cropId") Long cropId) {
-        Crop crop = cropRepository.getById(cropId);
-        Pest pest = new Pest(entity.getName(), entity.getDescription(), entity.getSolution());
-        pest = pestRepository.save(pest);
-        crop.addPest(pest);
-        crop = cropRepository.save(crop);
-        return "Pest added to Crop!!!";
+    @PostMapping
+    public ResponseEntity<PestResource> createPest(@RequestBody CreatePestCommand command) {
+        Crop crop = cropQueryService.findById(command.cropId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Crop not found"));
+
+        Long pestId = pestCommandService.handle(command);
+        PestResource pestResource = new PestResource(pestId, command.name(), command.description(), command.solution(), command.cropId());
+
+        crop.addPest(pestQueryService.findPestById(pestId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pest not found")));
+
+        cropCommandService.save(crop);
+
+        return new ResponseEntity<>(pestResource, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/getPest/{pestId}")
-    public String getPest(@PathVariable(name = "pestId") Integer pestId) {
-        Pest pest = pestRepository.getById(pestId);
-        return "Pest fetched successfully!!!";
+    @GetMapping
+    public ResponseEntity<List<PestResource>> getAllPests() {
+        var getAllPestsQuery = new GetAllPestsQuery();
+        var pests = pestQueryService.handle(getAllPestsQuery);
+        var pestResource = pests.stream().map(PestResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(pestResource);
+    }
+
+    @GetMapping("/{cropId}")
+    public ResponseEntity<List<PestResource>> getPestsByCropId(@PathVariable Long cropId) {
+        var pests = pestQueryService.handle(new GetAllPestsQuery());
+        var pestResources = pests.stream()
+                .map(pest -> new PestResource(pest.getId(), pest.getName(), pest.getDescription(), pest.getSolution(), pest.getCropId()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(pestResources);
     }
 }
