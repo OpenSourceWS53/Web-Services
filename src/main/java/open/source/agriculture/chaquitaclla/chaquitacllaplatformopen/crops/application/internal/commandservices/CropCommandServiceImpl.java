@@ -41,4 +41,9 @@ public class CropCommandServiceImpl implements CropCommandService {
     public void handle(DeleteCropCommand command) {
         cropRepository.deleteById(command.cropId());
     }
+
+    @Override
+    public void save(Crop crop) {
+        cropRepository.save(crop);
+    }
 }

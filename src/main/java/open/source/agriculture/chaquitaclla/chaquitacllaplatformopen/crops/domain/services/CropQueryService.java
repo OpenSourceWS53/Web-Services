@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CropQueryService {
     List<Crop> handle(GetAllCropsQuery query);
     Optional<Crop> handle(GetCropByIdQuery query);
+    Optional<Crop> findById(Long id);
 }

@@ -19,7 +19,7 @@ public class DiseaseCommandServiceImpl implements DiseaseCommandService {
 
     @Override
     public Long handle(CreateDiseaseCommand command) {
-        Disease disease = new Disease(command.name(), command.description(), command.solution());
+        Disease disease = new Disease(command.name(), command.description(), command.solution(), command.cropId());
         disease = diseaseRepository.save(disease);
         return disease.getId();
     }

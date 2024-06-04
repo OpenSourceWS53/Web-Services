@@ -11,4 +11,6 @@ public interface CropCommandService {
     Long handle(CreateCropCommand command);
     Optional<Crop> handle(UpdateCropCommand command);
     void handle(DeleteCropCommand command);
+
+    void save(Crop crop);
 }

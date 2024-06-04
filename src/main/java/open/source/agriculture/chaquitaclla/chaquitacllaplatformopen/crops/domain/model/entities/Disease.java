@@ -13,6 +13,8 @@ import java.util.Set;
 @Entity
 public class Disease {
     @Getter
+    private final Long cropId;
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,20 +33,17 @@ public class Disease {
     @Size(max = 500)
     private String Solution;
 
-    @ManyToMany
-    @JoinTable(
-            name = "crop_diseases",
-            joinColumns = @JoinColumn(name = "disease_id"),
-            inverseJoinColumns = @JoinColumn(name = "crop_id")
-    )
+    @ManyToMany(mappedBy = "diseases")
     private Set<Crop> crops = new HashSet<>();
 
-    public Disease(String Name, String Description, String Solution){
+    public Disease(String Name, String Description, String Solution, Long cropId){
         this.Name = Name;
         this.Description = Description;
         this.Solution = Solution;
-    }
-    public Disease(){
+        this.cropId = cropId;
     }
 
+    public Disease(){
+        this.cropId = null;
+    }
 }

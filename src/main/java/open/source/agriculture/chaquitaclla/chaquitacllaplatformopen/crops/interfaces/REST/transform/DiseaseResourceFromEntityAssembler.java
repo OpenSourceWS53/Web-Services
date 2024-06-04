@@ -10,7 +10,8 @@ public class DiseaseResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
-                entity.getSolution()
+                entity.getSolution(),
+                entity.getCropId()
         );
     }
 }

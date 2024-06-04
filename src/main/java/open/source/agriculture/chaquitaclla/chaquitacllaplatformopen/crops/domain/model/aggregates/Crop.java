@@ -32,12 +32,11 @@ public class Crop extends AbstractAggregateRoot<Crop> {
     @Size(max = 30)
     private String Name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "crop_diseases",
-            joinColumns = @JoinColumn(name = "crop_id", foreignKey = @ForeignKey(name = "fk_crop_diseases_crop")),
-            inverseJoinColumns = @JoinColumn(name = "disease_id", foreignKey = @ForeignKey(name = "fk_crop_diseases_disease"))
-    )
-    private Set<Disease> diseases;
+            joinColumns = @JoinColumn(name = "crop_id"),
+            inverseJoinColumns = @JoinColumn(name = "disease_id"))
+    private Set<Disease> diseases = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "crop_pests",

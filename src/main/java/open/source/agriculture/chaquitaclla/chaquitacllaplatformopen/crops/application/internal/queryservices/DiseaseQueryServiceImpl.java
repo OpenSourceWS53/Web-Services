@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiseaseQueryServiceImpl implements DiseaseQueryService {
@@ -24,6 +25,11 @@ public class DiseaseQueryServiceImpl implements DiseaseQueryService {
     @Override
     public List<Disease> handle(GetAllDiseasesQuery query) {
         return diseaseRepository.findAll();
+    }
+
+    @Override
+    public Optional<Disease> findById(Long diseaseId) {
+        return diseaseRepository.findById(Math.toIntExact(diseaseId));
     }
 
 }
