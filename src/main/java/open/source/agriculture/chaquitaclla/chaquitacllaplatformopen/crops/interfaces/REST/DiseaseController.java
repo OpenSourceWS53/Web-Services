@@ -1,17 +1,17 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateDiseaseCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetAllDiseasesQuery;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetDiseasesByCropIdQuery;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.*;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.DiseaseResource;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.DiseaseResourceFromEntityAssembler;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/disease")
@@ -19,10 +19,12 @@ public class DiseaseController {
 
     private final DiseaseCommandService diseaseCommandService;
     private final DiseaseQueryService diseaseQueryService;
+    private final CropQueryService cropQueryService;
 
-    public DiseaseController(DiseaseCommandService diseaseCommandService, DiseaseQueryService diseaseQueryService) {
+    public DiseaseController(DiseaseCommandService diseaseCommandService, DiseaseQueryService diseaseQueryService, CropQueryService cropQueryService) {
         this.diseaseCommandService = diseaseCommandService;
         this.diseaseQueryService = diseaseQueryService;
+        this.cropQueryService = cropQueryService;
     }
 
     @PostMapping
@@ -32,19 +34,12 @@ public class DiseaseController {
         return new ResponseEntity<>(diseaseResource, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DiseaseResource> getDisease(@PathVariable Long id) {
-        return diseaseQueryService.handle(new GetDiseasesByCropIdQuery(id))
+    @GetMapping("/{cropId}/diseases")
+    public ResponseEntity<List<DiseaseResource>> getDiseasesByCropId(@PathVariable Long cropId) {
+        var diseases = diseaseQueryService.handle(new GetAllDiseasesQuery());
+        var diseaseResources = diseases.stream()
                 .map(disease -> new DiseaseResource(disease.getId(), disease.getName(), disease.getDescription(), disease.getSolution()))
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping
-    public ResponseEntity<List<DiseaseResource>> getAllDiseases() {
-        var getAllDiseasesQuery = new GetAllDiseasesQuery();
-        var diseases = diseaseQueryService.handle(getAllDiseasesQuery);
-        var diseaseResources = diseases.stream().map(DiseaseResourceFromEntityAssembler::toResourceFromEntity).toList();
+                .collect(Collectors.toList());
         return ResponseEntity.ok(diseaseResources);
     }
 }

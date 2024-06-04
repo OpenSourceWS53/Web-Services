@@ -12,14 +12,17 @@ import java.util.Set;
 @Getter
 @Entity
 public class Disease {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @NotNull
     @Size(max = 30)
     private String Name;
 
+    @Getter
     @NotNull
     @Size(max = 500)
     private String Description;
@@ -43,4 +46,5 @@ public class Disease {
     }
     public Disease(){
     }
+
 }
