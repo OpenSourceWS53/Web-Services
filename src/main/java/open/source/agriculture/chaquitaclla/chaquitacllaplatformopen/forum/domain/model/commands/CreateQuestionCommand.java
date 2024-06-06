@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 
 
 
-public record CreateQuestionCommand(String category, Long userId, String question) {
+public record CreateQuestionCommand(String category, Long userId, String questionText) {
 }

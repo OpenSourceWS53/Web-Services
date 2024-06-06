@@ -8,7 +8,7 @@ public class UpdateQuestionCommandFromResourceAssembler {
         return new UpdateQuestionCommand(
                 questionId,
                 resource.category(),
-                resource.question()
+                resource.questionText()
         );
     }
 }

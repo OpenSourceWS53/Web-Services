@@ -8,7 +8,7 @@ public class CreateAnswerCommandFromResourceAssembler {
         return new CreateAnswerCommand(
                 userId,
                 questionId,
-                resource.answer()
+                resource.answerText()
         );
 
     }

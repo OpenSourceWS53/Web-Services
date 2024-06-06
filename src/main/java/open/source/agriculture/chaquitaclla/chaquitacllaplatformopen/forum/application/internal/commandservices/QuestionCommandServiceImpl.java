@@ -22,7 +22,7 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
 
     @Override
     public Long handle(CreateQuestionCommand command) {
-        var question = new Question(command.category(), command.userId(),command.question());
+        var question = new Question(command.category(), command.userId(),command.questionText());
         questionRepository.save(question);
         return question.getId();
     }
@@ -32,7 +32,7 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
         if(!questionRepository.existsById(command.questionId()))
             throw new IllegalArgumentException("Question does not exist");
         var questionToUpdate = questionRepository.findById(command.questionId()).get();
-        var updateQuestion = questionRepository.save(questionToUpdate.updateInformation(command.category(),command.question()));
+        var updateQuestion = questionRepository.save(questionToUpdate.updateInformation(command.category(),command.questionText()));
         return Optional.of(updateQuestion);
     }
 

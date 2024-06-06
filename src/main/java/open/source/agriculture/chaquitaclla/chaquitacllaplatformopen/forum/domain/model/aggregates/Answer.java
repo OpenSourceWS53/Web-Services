@@ -2,7 +2,6 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Question;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 import org.apache.logging.log4j.util.Strings;
@@ -24,23 +23,23 @@ public class Answer extends AuditableModel {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    private String answer;
+    private String answerText;
 
     public Answer(){
         this.userId = new UserId();
         this.question = new Question();
-        this.answer = Strings.EMPTY;
+        this.answerText = Strings.EMPTY;
     }
 
-    public Answer(Long userId, Question question, String answer){
+    public Answer(Long userId, Question question, String answerText){
         this();
         this.userId = new UserId(userId);
         this.question = question;
-        this.answer = answer;
+        this.answerText = answerText;
     }
 
     public Answer updateInformation(String answer){
-        this.answer = answer;
+        this.answerText = answer;
         return this;
     }
 }

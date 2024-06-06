@@ -28,7 +28,7 @@ public class AnswerCommandServiceImpl implements AnswerCommandService {
         Optional<Question> optionalQuestion = questionRepository.findById(command.questionId());
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
-            Answer answer = new Answer(command.userId(), question, command.answer());
+            Answer answer = new Answer(command.userId(), question, command.answerText());
             answerRepository.save(answer);
             return answer.getId();
         } else {
@@ -41,7 +41,7 @@ public class AnswerCommandServiceImpl implements AnswerCommandService {
         if(!answerRepository.existsById(command.answerId()))
             throw new IllegalArgumentException("Answer does not exist");
         var answerToUpdate = answerRepository.findById(command.answerId()).get();
-        var updateAnswer = answerRepository.save(answerToUpdate.updateInformation(command.answer()));
+        var updateAnswer = answerRepository.save(answerToUpdate.updateInformation(command.answerText()));
         return Optional.of(updateAnswer);
     }
 

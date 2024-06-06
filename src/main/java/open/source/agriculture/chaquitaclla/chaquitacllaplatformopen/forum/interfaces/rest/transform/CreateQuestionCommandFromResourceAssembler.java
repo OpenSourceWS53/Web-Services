@@ -8,7 +8,7 @@ public class CreateQuestionCommandFromResourceAssembler {
         return new CreateQuestionCommand(
                 resource.category(),
                 userId,
-                resource.question()
+                resource.questionText()
         );
     }
 }

@@ -9,7 +9,7 @@ public class QuestionResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getCategory(),
                 entity.getUserId().userId(),
-                entity.getQuestion()
+                entity.getQuestionText()
         );
     }
 

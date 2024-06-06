@@ -28,7 +28,7 @@ public class Question extends AbstractAggregateRoot<Question> {
     private UserId userId;
 
     @NotNull
-    private String question;
+    private String questionText;
 
 
     @CreatedDate
@@ -40,19 +40,19 @@ public class Question extends AbstractAggregateRoot<Question> {
     public Question() {
         this.category = Strings.EMPTY;
         this.userId = new UserId();
-        this.question = Strings.EMPTY;
+        this.questionText = Strings.EMPTY;
     }
 
-    public Question(String category, Long userId, String question) {
+    public Question(String category, Long userId, String questionText) {
         this();
         this.category = category;
         this.userId = new UserId(userId);
-        this.question = question;
+        this.questionText = questionText;
     }
 
     public Question updateInformation(String category, String question) {
         this.category = category;
-        this.question = question;
+        this.questionText = question;
         return this;
     }
 }

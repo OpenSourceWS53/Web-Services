@@ -7,7 +7,7 @@ public class UpdateAnswerCommandFromResourceAssembler {
     public static UpdateAnswerCommand toCommandFromResource(Long answerId, UpdateAnswerResource resource){
         return new UpdateAnswerCommand(
                 answerId,
-                resource.answer()
+                resource.answerText()
         );
     }
 }
