@@ -25,6 +25,8 @@ public class AnswerCommandServiceImpl implements AnswerCommandService {
 
     @Override
     public Long handle(CreateAnswerCommand command) {
+        if (answerRepository.existsByAnswerText(command.answerText()))
+            throw new IllegalArgumentException("Answer already exists");
         Optional<Question> optionalQuestion = questionRepository.findById(command.questionId());
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();

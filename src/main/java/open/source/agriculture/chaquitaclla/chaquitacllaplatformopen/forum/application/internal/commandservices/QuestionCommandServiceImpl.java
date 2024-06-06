@@ -22,6 +22,8 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
 
     @Override
     public Long handle(CreateQuestionCommand command) {
+        if(questionRepository.existsByQuestionText(command.questionText()))
+            throw new IllegalArgumentException("Question already exists");
         var question = new Question(command.category(), command.userId(),command.questionText());
         questionRepository.save(question);
         return question.getId();
