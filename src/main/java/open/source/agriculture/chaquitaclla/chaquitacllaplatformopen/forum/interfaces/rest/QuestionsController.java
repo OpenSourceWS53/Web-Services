@@ -23,7 +23,24 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
+/**
+ * Question Controller.
+ * <p>
+ * This class is the entry point for all the REST API calls related to questions.
+ * It is responsible for handling the requests and delegating the processing to the appropriate services.
+ * It also transforms the data from the request to the appropriate commands and vice versa.
+ * <ul>
+ *     <li>POST /api/v1/forum/questions</li>
+ *     <li>GET /api/v1/forum/questions/{questionId}</li>
+ *     <li>GET /api/v1/forum/questions</li>
+ *     <li>PUT /api/v1/forum/questions/{questionId}</li>
+ *     <li>DELETE /api/v1/forum/questions/{questionId}</li>
+ *     <li>GET /api/v1/forum/questions/user/{userId}</li>
+ * </ul>
+ * </p>
+ *
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/v1/forum/questions", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Questions", description = "Questions Management Endpoints")

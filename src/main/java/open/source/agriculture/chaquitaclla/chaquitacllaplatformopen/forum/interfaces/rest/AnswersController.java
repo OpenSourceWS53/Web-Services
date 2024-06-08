@@ -18,6 +18,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Answer Controller.
+ * <p>
+ * This class is the entry point for all the REST API calls related to answers.
+ * It is responsible for handling the requests and delegating the processing to the appropriate services.
+ * It also transforms the data from the request to the appropriate commands and vice versa.
+ * <ul>
+ *     <li>POST /api/v1/forum/answers</li>
+ *     <li>GET /api/v1/forum/answers/{answerId}</li>
+ *     <li>GET /api/v1/forum/answers</li>
+ *     <li>PUT /api/v1/forum/answers/{answerId}</li>
+ *     <li>DELETE /api/v1/forum/answers/{answerId}</li>
+ *     <li>GET /api/v1/forum/answers/question/{questionId}</li>
+ * </ul>
+ * </p>
+ *
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/v1/forum/answers")
 @Tag(name = "Answers", description = "Answers Management Endpoints")
