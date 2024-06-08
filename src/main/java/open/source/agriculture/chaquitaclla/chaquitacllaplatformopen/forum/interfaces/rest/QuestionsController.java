@@ -37,8 +37,8 @@ public class QuestionsController {
     }
 
     @PostMapping()
-    public ResponseEntity<QuestionResource> createQuestion(@RequestHeader("userId") Long userId, @RequestBody CreateQuestionResource resource) {
-        var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(userId,resource);
+    public ResponseEntity<QuestionResource> createQuestion(@RequestBody CreateQuestionResource resource) {
+        var createQuestionCommand = CreateQuestionCommandFromResourceAssembler.toCommandFromResource(resource);
         var questionId = questionCommandService.handle(createQuestionCommand);
         if(questionId == 0L) return ResponseEntity.badRequest().build();
         var getQuestionByIdQuery = new GetQuestionByIdQuery(questionId);

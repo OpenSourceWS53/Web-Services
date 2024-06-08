@@ -31,8 +31,8 @@ public class AnswersController {
     }
 
     @PostMapping
-    public ResponseEntity<AnswerResource> createAnswer(@RequestHeader Long userId,@RequestHeader Long questionId ,@RequestBody CreateAnswerResource resource){
-        var createAnswerCommand = CreateAnswerCommandFromResourceAssembler.toCommandFromResource(userId, questionId, resource);
+    public ResponseEntity<AnswerResource> createAnswer(@RequestBody CreateAnswerResource resource){
+        var createAnswerCommand = CreateAnswerCommandFromResourceAssembler.toCommandFromResource(resource);
         var answerId = answerCommandService.handle(createAnswerCommand);
         if(answerId == 0L) return ResponseEntity.badRequest().build();
         var getAnswerByIdQuery = new GetAnswerByIdQuery(answerId);
