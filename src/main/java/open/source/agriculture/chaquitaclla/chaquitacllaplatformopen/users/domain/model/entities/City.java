@@ -1,9 +1,7 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.Country;
 
 
 @Entity

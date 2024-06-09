@@ -2,6 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.doma
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.City;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameUserRecord;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
