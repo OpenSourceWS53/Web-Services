@@ -6,7 +6,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.inter
 
 public class CreateCropSourceCommandFromResourceAssembler {
 
-    public CreateCropCommand toCommand(CreateCropResource resource) {
+    public static CreateCropCommand toCommandFromResource(CreateCropResource resource) {
         return new CreateCropCommand(
                 resource.name(),
                 resource.description(),

@@ -5,8 +5,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetCropByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreateCropResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CropResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.UpdateCropResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreateCropSourceCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CropResourceFromEntityAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.UpdateCropCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.DeleteCropCommand;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping(value = "/api/v1/crops")
+@RequestMapping(value = "/api/v1/crops")  
 public class CropController {
 
     private final CropCommandService cropCommandService;
@@ -31,18 +33,32 @@ public class CropController {
     }
 
     @PostMapping
-    public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropCommand command) {
-        Long cropId = cropCommandService.handle(command);
-        CropResource cropResource = new CropResource(cropId, command.name(), command.description());
+    public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropResource createCropResource) {
+        var createCropCommand = CreateCropSourceCommandFromResourceAssembler.toCommandFromResource(createCropResource);
+        var cropId = cropCommandService.handle(createCropCommand);
+
+        if (cropId == 0L) {
+            return ResponseEntity.badRequest().build();
+        }
+        var getCropByIdQuery = new GetCropByIdQuery(cropId);
+        var crop = cropQueryService.handle(getCropByIdQuery);
+
+        if (crop.isEmpty())
+            return ResponseEntity.badRequest().build();
+        var cropResource = CropResourceFromEntityAssembler.toResourceFromEntity(crop.get());
         return new ResponseEntity<>(cropResource, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CropResource> getCrop(@PathVariable Long id) {
-        return cropQueryService.handle(new GetCropByIdQuery(id))
-                .map(crop -> new CropResource(crop.getId(), crop.getName(), crop.getDescription()))
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        var getCropByIdQuery = new GetCropByIdQuery(id);
+        var crop = cropQueryService.handle(getCropByIdQuery);
+
+        if (crop.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        var cropResource = CropResourceFromEntityAssembler.toResourceFromEntity(crop.get());
+        return ResponseEntity.ok(cropResource);
     }
 
     @GetMapping
