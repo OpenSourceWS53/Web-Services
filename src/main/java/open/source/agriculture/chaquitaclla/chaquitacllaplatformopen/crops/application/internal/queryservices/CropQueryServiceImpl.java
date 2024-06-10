@@ -6,6 +6,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetCaresByCropIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetCropByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.services.CropQueryService;
+
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CropRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +22,24 @@ public class CropQueryServiceImpl implements CropQueryService {
         this.cropRepository = cropRepository;
     }
 
+
+
+    @Override
+    public Optional<Care> handle(GetCaresByCropIdQuery query) {
+        return cropRepository.findCareByCropId(query.cropId());
+    }
+}
+    public List<Crop> handle(GetAllCropsQuery query) {
+        return cropRepository.findAll();
+    }
+
     @Override
     public Optional<Crop> handle(GetCropByIdQuery query) {
         return cropRepository.findById(query.id());
     }
 
     @Override
-    public List<Crop> handle(GetAllCropsQuery query) {
-        return cropRepository.findAll();
-    }
-
-    @Override
-    public Optional<Care> handle(GetCaresByCropIdQuery query) {
-        return cropRepository.findCareByCropId(query.cropId());
+    public Optional<Crop> findById(Long id) {
+        return cropRepository.findById(id);
     }
 }
