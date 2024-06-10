@@ -5,6 +5,13 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.inter
 
 public class CreateUserCommandFromResourceAssembler {
     public static CreateUserCommand toCommandFromResource(CreateUserResource resource) {
-        return new CreateUserCommand(resource.firstName(), resource.lastName(), resource.email(), resource.password(), resource.cityId(), resource.subscriptionId());
+        return new CreateUserCommand(
+                resource.firstName(),
+                resource.lastName(),
+                resource.email(),
+                resource.password(),
+                resource.cityId(),
+                resource.subscriptionId()
+        );
     }
 }

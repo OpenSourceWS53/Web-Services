@@ -1,7 +1,7 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.City;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameUserRecord;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,9 +21,9 @@ public class User extends AbstractAggregateRoot<User> {
     private NameUserRecord name;
 
     @Embedded
-    @Email
-    @AttributeOverride(name = "emialDirection", column = @Column(name = "email"))
-    public EmailDirection email;
+    @AttributeOverride(name = "email", column = @Column(name = "email"))
+
+    private EmailDirection email;
 
     @Embedded
     @AttributeOverride(name = "password", column = @Column(name = "password"))
@@ -36,16 +36,16 @@ public class User extends AbstractAggregateRoot<User> {
     private Subscription subscription;
 
     @CreatedDate
-    private Date start_date;
+    private Date startDate;
 
     @CreatedDate
-    private Date end_date;
+    private Date endDate;
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, EmailDirection email, String password) {
         this.name = new NameUserRecord(firstName, lastName);
-        this.email = new EmailDirection(email);
+        this.email = email;
         this.password = new Password(password);
     }
 
@@ -73,12 +73,12 @@ public class User extends AbstractAggregateRoot<User> {
         return subscription;
     }
 
-    public Date getStart_date() {
-        return start_date;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public Date getEnd_date() {
-        return end_date;
+    public Date getEndDate() {
+        return endDate;
     }
 
     public Long getCityId() {
@@ -87,5 +87,13 @@ public class User extends AbstractAggregateRoot<User> {
 
     public Long getSubscriptionId() {
         return subscription != null ? subscription.getId() : null;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }

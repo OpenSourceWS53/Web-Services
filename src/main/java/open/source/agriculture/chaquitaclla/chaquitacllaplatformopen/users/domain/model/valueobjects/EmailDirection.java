@@ -2,23 +2,26 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.doma
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Embeddable
-public record EmailDirection(String email) {
-    //Constructor
-    public EmailDirection(){
-        this(null);
-    }
+public record EmailDirection(
+        @Email
+        @NotBlank
+        String email) {
 
-    public  EmailDirection{
+    public EmailDirection {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email is required");
         }
-
     }
+
+
+    public EmailDirection() {
+        this(null);
+    }
+
     public String getEmailDirection() {
         return email;
     }
-
-
 }
