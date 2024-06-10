@@ -1,35 +1,24 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates;
 
 import jakarta.persistence.*;
-<<<<<<< HEAD
-import org.springframework.data.domain.AbstractAggregateRoot;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-@EntityListeners(AuditingEntityListener.class)
-@Entity
-@Table(name = "users")
-=======
 import jakarta.validation.constraints.Email;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.City;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameUserRecord;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.City;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameUserRecord;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.EmailDirection;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.Password;
+
 import java.util.Date;
 
 @Entity
-@Table(name = "\"user\"")
->>>>>>> bc-users
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "users")
 public class User extends AbstractAggregateRoot<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-<<<<<<< HEAD
-    public User(){
-    }
-}
-=======
 
     @Embedded
     private NameUserRecord name;
@@ -103,4 +92,3 @@ public class User extends AbstractAggregateRoot<User> {
         return subscription != null ? subscription.getId() : null;
     }
 }
->>>>>>> bc-users
