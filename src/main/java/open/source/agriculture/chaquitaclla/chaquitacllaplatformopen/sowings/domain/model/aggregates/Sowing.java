@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.aggregates.Product;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.ProductsSowings;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.PhenologicalPhase;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
@@ -42,17 +43,11 @@ public class Sowing extends AbstractAggregateRoot<Sowing> {
     @JoinColumn(name = "crop_id")
     private Crop crop;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "sowing_products",
-            joinColumns = @JoinColumn(name = "sowing_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    @OneToMany(mappedBy = "sowing")
+    private Set<ProductsSowings> associations;
 
     private PhenologicalPhase phenologicalPhase;
 
-    public Sowing(){
-    products = new HashSet<>();
-    }
     public Sowing(DateRange dateRange, int areaLand, User user){
         this.dateRange = dateRange;
         this.areaLand = areaLand;
