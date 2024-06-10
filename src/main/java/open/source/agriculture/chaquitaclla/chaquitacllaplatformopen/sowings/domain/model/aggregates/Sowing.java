@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.Product;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.aggregates.Product;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.PhenologicalPhase;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
@@ -59,7 +59,13 @@ public class Sowing extends AbstractAggregateRoot<Sowing> {
         this.user = user;
         this.phenologicalPhase = PhenologicalPhase.GERMINATION;
     }
+    public void setDateRange(DateRange dateRange) {
+        this.dateRange = dateRange;
+    }
 
+    public void setAreaLand(int areaLand) {
+        this.areaLand = areaLand;
+    }
     public void germinationPhase(){
         this.phenologicalPhase = PhenologicalPhase.GERMINATION;
     }

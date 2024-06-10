@@ -6,18 +6,27 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.UpdateSowingCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.infrastructure.persistence.jpa.repositories.SowingRepository;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.infrastructure.persistence.jpa.repositories.UserRepository;
 
 import java.util.Optional;
 
 public class SowingCommandServiceImpl implements SowingCommandService {
     private final SowingRepository sowingRepository;
+    private final UserRepository userRepository;
 
-    public SowingCommandServiceImpl(SowingRepository sowingRepository) {
+    public SowingCommandServiceImpl(SowingRepository sowingRepository, UserRepository userRepository) {
         this.sowingRepository = sowingRepository;
+        this.userRepository = userRepository;
     }
+
     @Override
     public Long handle(CreateSowingCommand command) {
-        var sowing = new Sowing(command.dateRange(), command.cropId().intValue(), command.profileId());
+        Long profileIdLong = command.profileId().profileId(); // Assuming ProfileId has a getValue() method that returns Long
+        User user = userRepository.findById(profileIdLong)
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
+
+        var sowing = new Sowing(command.dateRange(), command.cropId().intValue(), user);
         sowingRepository.save(sowing);
         return sowing.getId();
     }
