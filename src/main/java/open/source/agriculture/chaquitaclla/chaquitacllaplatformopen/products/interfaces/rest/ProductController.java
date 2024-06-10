@@ -28,14 +28,14 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody CreateProductCommand command) {
         Long productId = productCommandService.handle(command);
-        ProductResource productResource = new ProductResource(productId, command.name(), command.quantity(),command.description(),command.productType());
+        ProductResource productResource = new ProductResource(productId, command.name(),command.description(),command.productType());
         return new ResponseEntity<>(productResource, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResource> getProductById(@RequestParam Long id) {
         return productQueryService.handle(new GetProductByIdQuery(id))
-                .map(product -> new ProductResource(product.getId(), product.getName(), product.getQuantity(),product.getDescription(),product.getProductType()))
+                .map(product -> new ProductResource(product.getId(), product.getName(), product.getDescription(),product.getProductType()))
                 .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
