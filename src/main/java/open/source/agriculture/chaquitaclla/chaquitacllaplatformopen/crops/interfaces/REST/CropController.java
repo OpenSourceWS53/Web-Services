@@ -1,7 +1,6 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateCropCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetAllCropsQuery;
@@ -15,17 +14,13 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infra
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreateCropResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CropResource;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.DiseaseResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.UpdateCropResource;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreateCropCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CropResourceFromEntityAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.UpdateCropCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.DeleteCropCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,25 +50,19 @@ public class CropController {
         this.cropQueryService = cropQueryService;
     }
 
-    @Autowired
-    private DiseaseQueryService diseaseQueryService;
-
-    @Autowired
-    private PestQueryService pestQueryService;
-
     @PostMapping
-    public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropResource cropResource) {
-        Set<Disease> diseases = cropResource.diseases().stream()
+    public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropResource resource) {
+        Set<Disease> diseases = resource.diseases().stream()
                 .map(diseaseId -> diseaseRepository.findById(Math.toIntExact(diseaseId))
                         .orElseThrow(() -> new NoSuchElementException("Disease not found")))
                 .collect(Collectors.toSet());
 
-        Set<Pest> pests = cropResource.pests().stream()
+        Set<Pest> pests = resource.pests().stream()
                 .map(pestId -> pestRepository.findById(Math.toIntExact(pestId))
                         .orElseThrow(() -> new NoSuchElementException("Pest not found")))
                 .collect(Collectors.toSet());
 
-        Crop crop = new Crop(cropResource.name(), cropResource.description(), diseases, pests);
+        Crop crop = new Crop(resource.name(), resource.description(), diseases, pests);
         cropRepository.save(crop);
 
         CropResource cropResourceResponse = CropResourceFromEntityAssembler.toResourceFromEntity(crop);

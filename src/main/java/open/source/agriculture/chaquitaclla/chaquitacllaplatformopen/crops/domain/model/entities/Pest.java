@@ -31,12 +31,7 @@ public class Pest {
     @Size(max = 500)
     private String Solution;
 
-    @ManyToMany
-    @JoinTable(
-            name = "crop_pests",
-            joinColumns = @JoinColumn(name = "pest_id", foreignKey = @ForeignKey(name = "fk_crop_pests_pest")),
-            inverseJoinColumns = @JoinColumn(name = "crop_id", foreignKey = @ForeignKey(name = "fk_crop_pests_crop"))
-    )
+    @ManyToMany(mappedBy = "pests")
     private Set<Crop> crops = new HashSet<>();
 
     public Pest(String Name, String Description, String Solution, Long cropId){

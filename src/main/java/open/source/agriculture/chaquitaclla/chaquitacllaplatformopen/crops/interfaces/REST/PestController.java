@@ -1,7 +1,10 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateCropCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateDiseaseCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreatePestCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.UpdateCropCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.*;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
@@ -9,9 +12,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.PestQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreatePestResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.DiseaseResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.PestResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreatePestSourceCommandFromResourceAssembler;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreatePestCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.PestResourceFromEntityAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,14 +47,19 @@ public class PestController {
 
     @PostMapping
     public ResponseEntity<PestResource> createPest(@RequestBody CreatePestResource resource) {
-        var createPestCommand = CreatePestSourceCommandFromResourceAssembler.toCommandFromResource(resource);
-        var pestId = pestCommandService.handle(createPestCommand);
-        if(pestId == 0L) return ResponseEntity.badRequest().build();
-        var getPestByIdQuery = new GetPestByIdQuery(pestId);
-        var pest = pestQueryService.handle(getPestByIdQuery);
-        if(pest.isEmpty()) return ResponseEntity.badRequest().build();
-        var pestResource = PestResourceFromEntityAssembler.toResourceFromEntity(pest.get());
-        return ResponseEntity.ok(pestResource);
+        var createPestCommand = CreatePestCommandFromResourceAssembler.toCommandFromResource(resource);
+        Crop crop = cropQueryService.findById(createPestCommand.cropId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Crop not found"));
+
+        Long pestId = pestCommandService.handle(createPestCommand);
+        PestResource pestResource = new PestResource(pestId, resource.name(), resource.description(), resource.solution(), resource.cropId());
+
+        crop.addPest(pestQueryService.findById(pestId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pest not found")));
+
+        cropCommandService.save(crop);
+
+        return new ResponseEntity<>(pestResource, HttpStatus.CREATED);
     }
 
     @GetMapping

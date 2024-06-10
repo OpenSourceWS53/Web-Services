@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 public class Disease {
     @Getter
-    private final Long cropId;
+    private Long cropId;
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

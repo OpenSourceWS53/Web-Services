@@ -32,13 +32,13 @@ public class CareQueryServiceImpl implements CareQueryService {
     }
 
     @Override
-    public Optional<Care> getCareById(Long careId) {
+    public Optional<Care> findById(Long careId) {
         return careRepository.findById(careId);
     }
 
     @Override
-    public Optional<Care> findById(Long careId) {
-        return careRepository.findById(careId);
+    public List<Care> findByCropId(Long cropId) {
+        return careRepository.findByCrop_Id(cropId);
     }
 
 }

@@ -6,8 +6,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreateDiseaseResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.DiseaseResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreateDiseaseCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.DiseaseResourceFromEntityAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +36,13 @@ public class DiseaseController {
     }
 
     @PostMapping
-    public ResponseEntity<DiseaseResource> createDisease(@RequestBody CreateDiseaseCommand command) {
-        Crop crop = cropQueryService.findById(command.cropId())
+    public ResponseEntity<DiseaseResource> createDisease(@RequestBody CreateDiseaseResource resource) {
+        var createDiseaseCommand = CreateDiseaseCommandFromResourceAssembler.toCommandFromResource(resource);
+        Crop crop = cropQueryService.findById(createDiseaseCommand.cropId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Crop not found"));
 
-        Long diseaseId = diseaseCommandService.handle(command);
-        DiseaseResource diseaseResource = new DiseaseResource(diseaseId, command.name(), command.description(), command.solution(), command.cropId());
+        Long diseaseId = diseaseCommandService.handle(createDiseaseCommand);
+        DiseaseResource diseaseResource = new DiseaseResource(diseaseId, resource.name(), resource.description(), resource.solution(), resource.cropId());
 
         crop.addDisease(diseaseQueryService.findById(diseaseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Disease not found")));

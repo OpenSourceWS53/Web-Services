@@ -12,8 +12,8 @@ public interface CareQueryService {
 
     Optional<Care> handle(GetCaresByCropIdQuery query);
 
-    Optional<Care> getCareById(Long careId);
-
     Optional<Care> findById(Long careId);
+
+    List<Care> findByCropId(Long cropId);
 
 }
