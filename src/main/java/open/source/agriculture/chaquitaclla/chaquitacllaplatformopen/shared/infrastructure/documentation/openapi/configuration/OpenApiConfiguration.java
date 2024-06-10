@@ -22,7 +22,7 @@ public class OpenApiConfiguration {
                                 .url("https://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
                         .description("User Platform Documentation")
-                        .url("https://github.com/upc-is-si729/daos-language-reference"));
+                        .url("https://github.com/SI729-WS53-AgriCulture/Chaquitaclla-web-services/tree/bc-users"));
         return openApi;
     }
 }
