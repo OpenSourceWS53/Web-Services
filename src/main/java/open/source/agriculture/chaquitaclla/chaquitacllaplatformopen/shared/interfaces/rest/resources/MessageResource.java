@@ -2,3 +2,4 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.int
 
 public record MessageResource(String message) {
 }
+

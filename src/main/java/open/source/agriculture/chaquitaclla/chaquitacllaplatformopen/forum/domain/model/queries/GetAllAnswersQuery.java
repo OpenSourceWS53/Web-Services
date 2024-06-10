@@ -1,4 +1,4 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.queries;
 
-public record GetAllAnswersByQuestionIdAndUserIdQuery(Long questionId, Long userId) {
+public record GetAllAnswersQuery() {
 }

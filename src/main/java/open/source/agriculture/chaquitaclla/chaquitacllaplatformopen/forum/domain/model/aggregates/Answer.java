@@ -1,12 +1,13 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates;
 
 import jakarta.persistence.*;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Question;
+import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.aggregates.User;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "answers")
 public class Answer extends AuditableModel {
@@ -14,26 +15,31 @@ public class Answer extends AuditableModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserId userId;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
 
-    private String answer;
+    private String answerText;
 
     public Answer(){
-        this.user = new User();
+        this.userId = new UserId();
         this.question = new Question();
-        this.answer = Strings.EMPTY;
+        this.answerText = Strings.EMPTY;
     }
 
-    public Answer(User user, Question question, String answer){
+    public Answer(Long userId, Question question, String answerText){
         this();
-        this.user = user;
+        this.userId = new UserId(userId);
         this.question = question;
-        this.answer = answer;
+        this.answerText = answerText;
+    }
+
+    public Answer updateInformation(String answer){
+        this.answerText = answer;
+        return this;
     }
 }

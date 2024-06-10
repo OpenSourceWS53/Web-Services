@@ -1,28 +1,17 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.application.internal.commandservices;
 
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateCropCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.DeleteCropCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.UpdateCropCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CropRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.services.CropCommandService;
 
-import java.util.Optional;
-
-@Service
 public class CropCommandServiceImpl implements CropCommandService {
+    private final CropCommandService cropCommandService;
 
-    private final CropRepository cropRepository;
-
-    @Autowired
-    public CropCommandServiceImpl(CropRepository cropRepository) {
-        this.cropRepository = cropRepository;
+    public CropCommandServiceImpl(CropCommandService cropCommandService) {
+        this.cropCommandService = cropCommandService;
+     ProjectBranch
+        return null;
     }
-
-    @Override
-    public Long handle(CreateCropCommand command) {
+}
         Crop crop = new Crop(command.name(), command.description(), command.diseases(), command.pests());
         crop = cropRepository.save(crop);
         return crop.getId();
