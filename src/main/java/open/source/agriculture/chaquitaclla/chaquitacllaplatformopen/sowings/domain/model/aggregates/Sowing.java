@@ -3,7 +3,8 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.do
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
+/*
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;*/
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.aggregates.Product;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.ProductsSowings;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.PhenologicalPhase;
@@ -38,10 +39,10 @@ public class Sowing extends AbstractAggregateRoot<Sowing> {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+/*
     @ManyToOne
     @JoinColumn(name = "crop_id")
-    private Crop crop;
+    private Crop crop;*/
 
     @OneToMany(mappedBy = "sowing")
     private Set<ProductsSowings> associations;

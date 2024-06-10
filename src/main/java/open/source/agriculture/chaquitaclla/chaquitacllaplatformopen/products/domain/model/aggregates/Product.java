@@ -7,6 +7,7 @@ import lombok.Setter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.commands.CreateProductCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.ProductsSowings;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.valueobjects.ProductType;
+import org.apache.logging.log4j.util.Strings;
 
 import java.util.Set;
 
@@ -29,6 +30,12 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     Set<ProductsSowings> associations;
+
+    public Product(){
+        this.name= Strings.EMPTY;
+        this.description= Strings.EMPTY;
+        this.productType= ProductType.OTHER;
+    }
 
     public Product(CreateProductCommand command) {
         this.name = command.name();
