@@ -20,15 +20,14 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         this.productRepository = productRepository;
     }
 
-
-    @Override
-    public List<Product> handle(GetProductsBySowingIdQuery query) {
-        return productRepository.findAll();
-    }
-
+    /*
+        @Override
+        public List<Product> handle(GetProductsBySowingIdQuery query) {
+            return this.productRepository.findAll();
+        }
+    */
     @Override
     public Optional<Product> handle(GetProductByIdQuery query) {
-        return productRepository.findById(query.id());
+        return this.productRepository.findById(query.productId());
     }
-
 }

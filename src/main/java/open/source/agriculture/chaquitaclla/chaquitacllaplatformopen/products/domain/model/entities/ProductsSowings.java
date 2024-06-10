@@ -10,25 +10,17 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 @Getter
 @Setter
 @Entity
-public class SowingAssociation {
+public class ProductsSowings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinTable(
-            name = "products_sowings",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "sowing_id")
-    )
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinTable(
-            name = "products_sowings",
-            joinColumns = @JoinColumn(name = "sowing_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
+    @JoinColumn(name = "sowing_id")
     private Sowing sowing;
 
     @NotNull

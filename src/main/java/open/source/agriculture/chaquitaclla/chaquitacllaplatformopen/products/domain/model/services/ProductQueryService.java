@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductQueryService {
-    List<Product> handle(GetProductsBySowingIdQuery query);
+    /*List<Product> handle(GetProductsBySowingIdQuery query);*/
     Optional<Product> handle(GetProductByIdQuery query);
 }

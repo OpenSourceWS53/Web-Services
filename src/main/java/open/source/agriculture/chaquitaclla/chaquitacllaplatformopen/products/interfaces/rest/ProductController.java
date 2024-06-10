@@ -6,7 +6,9 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.do
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.queries.GetProductsBySowingIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.services.ProductCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.services.ProductQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.interfaces.rest.resources.CreateProductResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.interfaces.rest.resources.ProductResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.interfaces.rest.transform.CreateProductCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.interfaces.rest.transform.ProductResourceFromEntityAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +28,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody CreateProductCommand command) {
-        Long productId = productCommandService.handle(command);
-        ProductResource productResource = new ProductResource(productId, command.name(),command.description(),command.productType());
+    public ResponseEntity<ProductResource> createProduct(@RequestBody CreateProductResource resource) {
+        var createProductCommand = CreateProductCommandFromResourceAssembler.toCommandFromResource(resource);
+        Long productId = productCommandService.handle(createProductCommand);
+        var getProductByIdQuery = new GetProductByIdQuery(productId);
+        var product = productQueryService.handle(getProductByIdQuery);
+        var productResource = ProductResourceFromEntityAssembler.toResourceFromEntity(product.get());
         return new ResponseEntity<>(productResource, HttpStatus.CREATED);
     }
 
@@ -40,13 +45,13 @@ public class ProductController {
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<?> getProductsBySowingId() {
             var getProductsBySowingIdQuery = new GetProductsBySowingIdQuery();
             var products = productQueryService.handle(getProductsBySowingIdQuery);
             var productResources = products.stream().map(ProductResourceFromEntityAssembler::toResourceFromEntity).toList();
             return ResponseEntity.ok(productResources);
-    }
+    }*/
 
 
     @DeleteMapping("/{id}")

@@ -28,10 +28,10 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public void handle(DeleteProductCommand command) {
-        if(!productRepository.existsById(command.productId())){
-            throw new IllegalArgumentException("Product with id " + command.productId() + " does not exist.");
+        if(!productRepository.existsById(command.id())){
+            throw new IllegalArgumentException("Product with id " + command.id() + " does not exist.");
 
         }
-        productRepository.deleteById(command.productId());
+        productRepository.deleteById(command.id());
     }
 }
