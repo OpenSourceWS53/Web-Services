@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.d
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.valueobjects.ProductType;
 
-public record CreateProductCommand(String name, Float quantity, ProductType productType) {
+public record CreateProductCommand(String name, Float quantity, String description, ProductType productType) {
 }
