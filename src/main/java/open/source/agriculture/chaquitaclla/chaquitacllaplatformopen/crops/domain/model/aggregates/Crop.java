@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Care;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -36,7 +38,7 @@ public class Crop extends AbstractAggregateRoot<Crop> {
     @JoinTable(name = "crop_diseases",
             joinColumns = @JoinColumn(name = "crop_id"),
             inverseJoinColumns = @JoinColumn(name = "disease_id"))
-    private Set<Disease> diseases = new HashSet<>();
+    private Set<Disease> diseases;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "crop_pests",
@@ -44,6 +46,9 @@ public class Crop extends AbstractAggregateRoot<Crop> {
             inverseJoinColumns = @JoinColumn(name = "pest_id", foreignKey = @ForeignKey(name = "fk_crop_pests_pest"))
     )
     private Set<Pest> pests;
+
+    @OneToMany(mappedBy = "crop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Care> cares = new HashSet<>();
 
     public Crop(){
         diseases = new HashSet<>();
@@ -76,6 +81,11 @@ public class Crop extends AbstractAggregateRoot<Crop> {
         return this;
     }
 
+    public Crop addCare(Care care) {
+        this.cares.add(care);
+        return this;
+    }
+
     public Crop addDiseases(Set<Disease> diseases) {
         this.diseases.addAll(diseases);
         return this;
@@ -96,5 +106,11 @@ public class Crop extends AbstractAggregateRoot<Crop> {
         return this;
     }
 
+    public List<Long> getDiseaseIds() {
+          return diseases.stream().map(Disease::getId).collect(Collectors.toList());
+    }
 
+    public List<Long> getPestIds() {
+        return pests.stream().map(Pest::getId).collect(Collectors.toList());
+    }
 }

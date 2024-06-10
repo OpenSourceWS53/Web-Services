@@ -59,7 +59,9 @@ public class DiseaseController {
 
     @GetMapping("/{cropId}")
     public ResponseEntity<List<DiseaseResource>> getDiseasesByCropId(@PathVariable Long cropId) {
-        var diseases = diseaseQueryService.handle(new GetAllDiseasesQuery());
+        var getDiseasesByCropIdQuery = new GetDiseasesByCropIdQuery(cropId);
+        var diseases = diseaseQueryService.handle(getDiseasesByCropIdQuery);
+        if(diseases.isEmpty()) return ResponseEntity.badRequest().build();
         var diseaseResources = diseases.stream()
                 .map(disease -> new DiseaseResource(disease.getId(), disease.getName(), disease.getDescription(), disease.getSolution(), disease.getCropId()))
                 .collect(Collectors.toList());

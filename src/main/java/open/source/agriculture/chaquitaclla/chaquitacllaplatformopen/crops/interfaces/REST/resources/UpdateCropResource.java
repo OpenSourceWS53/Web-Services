@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.inte
 
 import java.util.List;
 
-public record UpdateCropResource(String name, String description, List<Long> diseaseIds, List<Long> pestIds) {
+public record UpdateCropResource(String name, String description) {
 }

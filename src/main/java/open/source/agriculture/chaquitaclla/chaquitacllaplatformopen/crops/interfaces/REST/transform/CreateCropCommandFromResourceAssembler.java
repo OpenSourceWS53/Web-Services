@@ -4,14 +4,14 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreateCropResource;
 
 
-public class CreateCropSourceCommandFromResourceAssembler {
+public class CreateCropCommandFromResourceAssembler {
 
     public static CreateCropCommand toCommandFromResource(CreateCropResource resource) {
         return new CreateCropCommand(
                 resource.name(),
                 resource.description(),
-                resource.diseaseIds(),
-                resource.pestIds()
+                resource.diseases(),
+                resource.pests()
         );
     }
 }
