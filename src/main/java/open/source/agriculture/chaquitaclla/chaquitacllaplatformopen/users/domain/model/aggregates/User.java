@@ -23,7 +23,7 @@ public class User extends AbstractAggregateRoot<User> {
     @Embedded
     @Email
     @AttributeOverride(name = "emialDirection", column = @Column(name = "email"))
-    private EmailDirection email;
+    public EmailDirection email;
 
     @Embedded
     @AttributeOverride(name = "password", column = @Column(name = "password"))
@@ -53,12 +53,24 @@ public class User extends AbstractAggregateRoot<User> {
         return id;
     }
 
-    public void updateName(String firstName, String lastName) {
-        this.name = new NameUserRecord(firstName, lastName);
+    public NameUserRecord getName() {
+        return name;
     }
 
-    public String getFullName() {
-        return this.name.fullName();
+    public EmailDirection getEmail() {
+        return email;
+    }
+
+    public Password getPassword() {
+        return password;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
     }
 
     public Date getStart_date() {
@@ -67,5 +79,13 @@ public class User extends AbstractAggregateRoot<User> {
 
     public Date getEnd_date() {
         return end_date;
+    }
+
+    public Long getCityId() {
+        return city != null ? city.getId() : null;
+    }
+
+    public Long getSubscriptionId() {
+        return subscription != null ? subscription.getId() : null;
     }
 }

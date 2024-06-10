@@ -14,6 +14,10 @@ public record Password (String password){
         if(password == null || password.isEmpty() || password.length() < 8){
             throw new IllegalArgumentException("Invalid password");
         }
+
+    }
+    public String getPassword() {
+        return password;
     }
 
 }

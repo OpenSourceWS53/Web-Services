@@ -10,11 +10,14 @@ public record EmailDirection(String email) {
         this(null);
     }
 
-    public  EmailDirection(String email) {
+    public  EmailDirection{
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email is required");
         }
-        this.email = email;
+
+    }
+    public String getEmailDirection() {
+        return email;
     }
 
 

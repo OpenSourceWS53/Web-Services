@@ -18,7 +18,11 @@ public record NameUserRecord(String firstName, String lastName) {
         }
     }
     //Methods
-    public String fullName() {
-        return firstName + " " + lastName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }
