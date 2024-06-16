@@ -7,7 +7,7 @@ public class QuestionResourceFromEntityAssembler {
     public static QuestionResource toResourceFromEntity(Question entity) {
         return new QuestionResource(
                 entity.getId(),
-                entity.getCategory(),
+                entity.getCategory().getId(),
                 entity.getUserId().userId(),
                 entity.getQuestionText()
         );

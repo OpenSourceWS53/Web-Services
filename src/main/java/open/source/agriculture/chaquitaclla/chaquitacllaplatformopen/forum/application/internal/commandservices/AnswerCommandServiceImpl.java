@@ -28,14 +28,16 @@ public class AnswerCommandServiceImpl implements AnswerCommandService {
         if (answerRepository.existsByAnswerTextAndQuestionId(command.answerText(), command.questionId()))
             throw new IllegalArgumentException("Answer with same answer text and questionId already exists");
         Optional<Question> optionalQuestion = questionRepository.findById(command.questionId());
-        if (optionalQuestion.isPresent()) {
-            Question question = optionalQuestion.get();
-            Answer answer = new Answer(command.userId(), question, command.answerText());
-            answerRepository.save(answer);
-            return answer.getId();
-        } else {
+        if(optionalQuestion.isEmpty())
             throw new IllegalArgumentException("Question does not exist");
+        Question question = optionalQuestion.get();
+        Answer answer = new Answer(command, question);
+        try {
+            answerRepository.save(answer);
+        }catch (Exception e) {
+            throw new IllegalArgumentException("Error while saving answer: " + e.getMessage());
         }
+        return answer.getId();
     }
 
     @Override
@@ -43,14 +45,23 @@ public class AnswerCommandServiceImpl implements AnswerCommandService {
         if(!answerRepository.existsById(command.answerId()))
             throw new IllegalArgumentException("Answer does not exist");
         var answerToUpdate = answerRepository.findById(command.answerId()).get();
-        var updateAnswer = answerRepository.save(answerToUpdate.updateInformation(command.answerText()));
-        return Optional.of(updateAnswer);
+        try {
+            var updateAnswer = answerRepository.save(answerToUpdate.updateInformation(command.answerText()));
+            return Optional.of(updateAnswer);
+        }catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating answer: " + e.getMessage());
+        }
     }
 
     @Override
     public void handle(DeleteAnswerCommand command) {
         if(!answerRepository.existsById(command.answerId()))
             throw new IllegalArgumentException("Answer does not exist");
-        answerRepository.deleteById(command.answerId());
+        try {
+            answerRepository.deleteById(command.answerId());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while deleting answer: " + e.getMessage());
+        }
+
     }
 }

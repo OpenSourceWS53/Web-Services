@@ -1,5 +1,5 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources;
 
 
-public record QuestionResource(Long id,String Category, Long userId, String questionText) {
+public record QuestionResource(Long id,Long categoryId, Long userId, String questionText) {
 }

@@ -3,6 +3,8 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.CreateQuestionCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities.Category;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,9 +22,9 @@ public class Question extends AbstractAggregateRoot<Question> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String category;
-
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @JoinColumn(name = "user_id")
     private UserId userId;
@@ -38,19 +40,26 @@ public class Question extends AbstractAggregateRoot<Question> {
     private Date updatedAt;
 
     public Question() {
-        this.category = Strings.EMPTY;
+        this.category = new Category();
         this.userId = new UserId();
         this.questionText = Strings.EMPTY;
     }
 
-    public Question(String category, Long userId, String questionText) {
+    public Question(Category category, Long userId, String questionText) {
         this();
         this.category = category;
         this.userId = new UserId(userId);
         this.questionText = questionText;
     }
 
-    public Question updateInformation(String category, String question) {
+    public Question(CreateQuestionCommand command, Category category) {
+        this();
+        this.category = category;
+        this.userId = new UserId(command.userId());
+        this.questionText = command.questionText();
+    }
+
+    public Question updateInformation(Category category, String question) {
         this.category = category;
         this.questionText = question;
         return this;

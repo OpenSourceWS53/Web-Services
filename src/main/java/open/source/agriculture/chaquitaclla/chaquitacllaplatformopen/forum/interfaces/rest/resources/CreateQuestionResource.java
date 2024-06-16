@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.inte
 
 
 
-public record CreateQuestionResource(Long userId,String category, String questionText) {
+public record CreateQuestionResource(Long userId,Long categoryId, String questionText) {
 }

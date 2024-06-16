@@ -2,6 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.doma
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.CreateAnswerCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 import org.apache.logging.log4j.util.Strings;
@@ -37,7 +38,12 @@ public class Answer extends AuditableModel {
         this.question = question;
         this.answerText = answerText;
     }
-
+    public Answer(CreateAnswerCommand command, Question question){
+        this();
+        this.userId = new UserId(command.userId());
+        this.question = question;
+        this.answerText = command.answerText();
+    }
     public Answer updateInformation(String answer){
         this.answerText = answer;
         return this;

@@ -6,7 +6,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.inter
 public class CreateQuestionCommandFromResourceAssembler {
     public static CreateQuestionCommand toCommandFromResource(CreateQuestionResource resource){
         return new CreateQuestionCommand(
-                resource.category(),
+                resource.categoryId(),
                 resource.userId(),
                 resource.questionText()
         );
