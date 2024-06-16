@@ -8,13 +8,12 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
+@Entity
 @EntityListeners(AuditingEntityListener.class)
-@Entity(name = "answers")
 public class Answer extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @JoinColumn(name = "user_id")
     private UserId userId;
@@ -23,6 +22,7 @@ public class Answer extends AuditableModel {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    @Column
     private String answerText;
 
     public Answer(){

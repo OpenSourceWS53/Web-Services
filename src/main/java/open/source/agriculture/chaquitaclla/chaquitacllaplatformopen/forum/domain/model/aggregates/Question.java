@@ -13,8 +13,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Date;
 
 @Getter
+@Entity
 @EntityListeners(AuditingEntityListener.class)
-@Entity(name = "questions")
 public class Question extends AbstractAggregateRoot<Question> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
