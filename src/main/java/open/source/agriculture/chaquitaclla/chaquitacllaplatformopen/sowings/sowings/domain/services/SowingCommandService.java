@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.sowings.domain.services;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates.Sowing;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.CreateSowingCommand;

@@ -1,4 +1,4 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries;
 
-public record GetAllCaresQuery() {
+public record GetAllSowingsQuery() {
 }
