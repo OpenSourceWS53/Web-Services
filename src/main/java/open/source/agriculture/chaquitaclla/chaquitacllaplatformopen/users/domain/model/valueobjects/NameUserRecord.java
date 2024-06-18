@@ -17,12 +17,5 @@ public record NameUserRecord(String firstName, String lastName) {
             throw new IllegalArgumentException("Last name is required");
         }
     }
-    //Methods
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
 }

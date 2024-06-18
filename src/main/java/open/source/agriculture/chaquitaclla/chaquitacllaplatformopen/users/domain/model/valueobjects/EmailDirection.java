@@ -15,13 +15,4 @@ public record EmailDirection(
             throw new IllegalArgumentException("Email is required");
         }
     }
-
-
-    public EmailDirection() {
-        this(null);
-    }
-
-    public String getEmailDirection() {
-        return email;
-    }
 }

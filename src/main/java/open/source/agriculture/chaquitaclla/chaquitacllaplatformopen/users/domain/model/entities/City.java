@@ -1,9 +1,12 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 
-
+@Getter
+@Setter
 @Entity
 public class City extends AuditableModel {
     @Id
@@ -26,24 +29,4 @@ public class City extends AuditableModel {
     }
 
 
-
-    //Getters and Setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public Country getCountry() {
-        return country;
-    }
-    public void setCountry(Country country) {
-        this.country = country;
-    }
 }

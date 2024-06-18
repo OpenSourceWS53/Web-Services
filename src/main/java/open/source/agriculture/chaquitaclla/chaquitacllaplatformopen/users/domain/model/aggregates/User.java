@@ -2,13 +2,13 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.doma
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Email;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.City;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameUserRecord;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.EmailDirection;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.Password;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "\"user\"")
@@ -22,7 +22,7 @@ public class User extends AbstractAggregateRoot<User> {
 
     @Embedded
     @AttributeOverride(name = "email", column = @Column(name = "email"))
-
+    @Email
     private EmailDirection email;
 
     @Embedded
@@ -35,65 +35,16 @@ public class User extends AbstractAggregateRoot<User> {
     @ManyToOne
     private Subscription subscription;
 
-    @CreatedDate
-    private Date startDate;
 
-    @CreatedDate
-    private Date endDate;
+    public User() {
 
-    public User() {}
+    }
 
-    public User(String firstName, String lastName, EmailDirection email, String password) {
+    public User(String firstName, String lastName, String email, String password) {
         this.name = new NameUserRecord(firstName, lastName);
-        this.email = email;
+        this.email = new EmailDirection(email);
         this.password = new Password(password);
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public NameUserRecord getName() {
-        return name;
-    }
-
-    public EmailDirection getEmail() {
-        return email;
-    }
-
-    public Password getPassword() {
-        return password;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public Subscription getSubscription() {
-        return subscription;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public Long getCityId() {
-        return city != null ? city.getId() : null;
-    }
-
-    public Long getSubscriptionId() {
-        return subscription != null ? subscription.getId() : null;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
 }

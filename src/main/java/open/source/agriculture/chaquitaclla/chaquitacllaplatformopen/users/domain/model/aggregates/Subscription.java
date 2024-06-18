@@ -2,16 +2,14 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.doma
 
 import jakarta.persistence.*;
 import lombok.*;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.valueobjects.NameSubsCriptionRecord;
 
-import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Subscription {
+public class Subscription extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,47 +20,18 @@ public class Subscription {
 
     private String description;
 
-    private Double price; // Asegúrate de añadir el campo price si es necesario.
+    private Double price;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Subscription that = (Subscription) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) && Objects.equals(price, that.price);
-    }
+    //contructor
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, price);
-    }
-
-    @Override
-    public String toString() {
-        return "Subscription{" +
-                "id=" + id +
-                ", name=" + name +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
-    }
-    //Getters id-name-description-price
-    public Long getId() {
-        return id;
-    }
-    public NameSubsCriptionRecord getName() {
-        return name;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public Double getPrice() {
-        return price;
+    public Subscription(String name, Double price,String description) {
+        this.name = new NameSubsCriptionRecord(name);
+        this.description = description;
+        this.price = price;
     }
 
 
+    public Subscription() {
 
-
-
+    }
 }

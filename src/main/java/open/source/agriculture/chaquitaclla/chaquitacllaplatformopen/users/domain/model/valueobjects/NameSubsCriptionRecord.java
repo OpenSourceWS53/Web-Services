@@ -15,9 +15,6 @@ public record NameSubsCriptionRecord(String subscriptionName) {
         }
 
     }
-    //Methods
-    public String describeName() {
-        return subscriptionName ;
-    }
+
 
 }
