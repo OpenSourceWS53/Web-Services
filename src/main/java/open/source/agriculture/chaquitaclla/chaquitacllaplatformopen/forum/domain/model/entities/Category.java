@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 public class Category extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

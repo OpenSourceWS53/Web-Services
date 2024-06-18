@@ -3,17 +3,19 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.doma
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 
 @Getter
 @Entity
-@Embeddable
-public class Care {
+public class Care extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crop_id")
     @NotNull
     private Crop crop;
@@ -21,11 +23,20 @@ public class Care {
     @NotNull
     private String description;
 
-    public Care(Crop crop, String description) {
+    public Care(String description, Crop crop) {
         this.crop = crop;
         this.description = description;
     }
-    public Care(){
+    public Care()
+    {
+    }
 
+    public Care(Long id, String description) {
+        this.id = id;
+        this.description = description;
+    }
+
+    public Long getCropId() {
+        return crop.getId();
     }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.CreateQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities.Category;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.valueobjects.UserId;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,11 +17,7 @@ import java.util.Date;
 
 @Getter
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-public class Question extends AbstractAggregateRoot<Question> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Question extends AuditableAbstractAggregateRoot<Question> {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
