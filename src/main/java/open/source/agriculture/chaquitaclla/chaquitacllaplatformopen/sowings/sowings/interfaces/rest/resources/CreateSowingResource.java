@@ -1,8 +1,0 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.sowings.interfaces.rest.resources;
-
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.CropId;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.ProfileId;
-
-public record CreateSowingResource(DateRange dateRange, CropId cropId, Integer areaLand, ProfileId profileId) {
-}
