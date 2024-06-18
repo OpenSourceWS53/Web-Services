@@ -11,9 +11,10 @@ import java.util.Date;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class AuditableAbstractAggregateRoot <T extends AbstractAggregateRoot<T>> extends AbstractAggregateRoot<T> {
-    @Getter
+public class AuditableAbstractAggregateRoot<T extends AbstractAggregateRoot<T>> extends AbstractAggregateRoot<T> {
+
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,4 +28,3 @@ public abstract class AuditableAbstractAggregateRoot <T extends AbstractAggregat
     @Column(nullable = false)
     private Date updatedAt;
 }
-

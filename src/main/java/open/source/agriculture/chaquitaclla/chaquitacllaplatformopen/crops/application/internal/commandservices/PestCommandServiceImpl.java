@@ -7,8 +7,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infra
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PestCommandServiceImpl implements PestCommandService {
 

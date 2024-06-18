@@ -4,7 +4,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PestRepository extends JpaRepository <Pest, Integer> {
     List<Pest> findByCropId(Long cropId);
