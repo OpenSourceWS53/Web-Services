@@ -4,12 +4,13 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.interfaces.rest.resources.QuestionResource;
 
 public class QuestionResourceFromEntityAssembler {
-    public static QuestionResource toResourceFromEntity(Question question) {
+    public static QuestionResource toResourceFromEntity(Question entity) {
         return new QuestionResource(
-                question.getId(),
-                question.getCategory(),
-                question.getUserId(),
-                question.getQuestion()
+                entity.getId(),
+                entity.getCategory().getId(),
+                entity.getUserId().userId(),
+                entity.getQuestionText()
         );
     }
+
 }

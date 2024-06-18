@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.Product;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.entities.SowingControl;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.CropId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.PhenologicalPhase;
@@ -18,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@EntityListeners(AuditingEntityListener.class)
 @Setter
 @Entity
-public class Sowing extends AbstractAggregateRoot<Sowing> {
+public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)

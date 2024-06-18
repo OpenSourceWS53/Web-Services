@@ -7,8 +7,8 @@ public class UpdateQuestionCommandFromResourceAssembler {
     public static UpdateQuestionCommand toCommandFromResource(Long questionId, UpdateQuestionResource resource){
         return new UpdateQuestionCommand(
                 questionId,
-                resource.category(),
-                resource.question()
+                resource.categoryId(),
+                resource.questionText()
         );
     }
 }

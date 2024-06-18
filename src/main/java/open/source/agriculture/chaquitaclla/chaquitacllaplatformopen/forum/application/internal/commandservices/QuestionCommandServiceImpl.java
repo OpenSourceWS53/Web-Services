@@ -4,7 +4,9 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.CreateQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.DeleteQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.UpdateQuestionCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities.Category;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services.QuestionCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.infrastructure.persistence.jpa.repositories.CategoryRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.infrastructure.persistence.jpa.repositories.QuestionRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,27 +16,47 @@ import java.util.Optional;
 public class QuestionCommandServiceImpl implements QuestionCommandService {
 
     private final QuestionRepository questionRepository;
-
-    public QuestionCommandServiceImpl(QuestionRepository questionRepository) {
+    private final CategoryRepository categoryRepository;
+    public QuestionCommandServiceImpl(QuestionRepository questionRepository, CategoryRepository categoryRepository) {
         this.questionRepository = questionRepository;
+        this.categoryRepository = categoryRepository;
     }
 
 
     @Override
     public Long handle(CreateQuestionCommand command) {
-        var question = new Question(command.category(), command.userId(),command.question());
-        questionRepository.save(question);
+        if(questionRepository.existsByQuestionText(command.questionText()))
+            throw new IllegalArgumentException("Question already exists");
+        Optional<Category> optionalCategory = categoryRepository.findById(command.categoryId());
+        if(optionalCategory.isEmpty())
+            throw new IllegalArgumentException("Category does not exist");
+        Category category = optionalCategory.get();
+        var question = new Question(command, category);
+        try {
+            questionRepository.save(question);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while saving question: " + e.getMessage());
+        }
+
         return question.getId();
     }
 
     @Override
     public Optional<Question> handle(UpdateQuestionCommand command) {
-        if(!questionRepository.existsById(command.questionId())){
+        if(!questionRepository.existsById(command.questionId()))
             throw new IllegalArgumentException("Question does not exist");
-        }
+        Optional<Category> optionalCategory = categoryRepository.findById(command.categoryId());
+        if(optionalCategory.isEmpty())
+            throw new IllegalArgumentException("Category does not exist");
+        Category category = optionalCategory.get();
         var questionToUpdate = questionRepository.findById(command.questionId()).get();
-        var updateQuestion = questionRepository.save(questionToUpdate.updateInformation(command.category(),command.question()));
-        return Optional.of(updateQuestion);
+        try {
+            var updateQuestion = questionRepository.save(questionToUpdate.updateInformation(category, command.questionText()));
+            return Optional.of(updateQuestion);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating question: " + e.getMessage());
+        }
+
     }
 
     @Override
@@ -42,6 +64,11 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
         if(!questionRepository.existsById(command.questionId())){
             throw new IllegalArgumentException("Question does not exist");
         }
-        questionRepository.deleteById(command.questionId());
+        try {
+            questionRepository.deleteById(command.questionId());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while deleting question: " + e.getMessage());
+        }
+
     }
 }
