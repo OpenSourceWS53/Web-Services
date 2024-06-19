@@ -16,12 +16,12 @@ public class Country extends AuditableModel {
     private String name;
 
     //contructor
+    public Country() {
 
+    }
     public Country(String name) {
         this.name = name;
     }
 
-    public Country() {
 
-    }
 }

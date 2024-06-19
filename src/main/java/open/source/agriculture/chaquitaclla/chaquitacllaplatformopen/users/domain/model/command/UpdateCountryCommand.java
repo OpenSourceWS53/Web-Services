@@ -1,5 +1,5 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command;
 
-public record UpdateCountryCommand(String name) {
+public record UpdateCountryCommand(Long id,String name) {
 
 }

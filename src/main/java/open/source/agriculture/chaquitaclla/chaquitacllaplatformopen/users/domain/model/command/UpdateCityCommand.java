@@ -1,4 +1,4 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command;
 
-public record UpdateCityCommand(String name, Long cityId, Long countryId) {
+public record UpdateCityCommand(Long id,String name, Long countryId) {
 }

@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.services;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.services;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command.*;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.Country;

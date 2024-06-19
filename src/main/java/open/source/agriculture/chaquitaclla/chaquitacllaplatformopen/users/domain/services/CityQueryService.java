@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.services;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.services;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.entities.City;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.queries.GetAllCitysQuery;

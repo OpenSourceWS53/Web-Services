@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.services;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.services;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command.CreateCityCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command.DeleteCityCommand;

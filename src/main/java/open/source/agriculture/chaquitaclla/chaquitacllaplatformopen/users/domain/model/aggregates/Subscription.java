@@ -23,7 +23,9 @@ public class Subscription extends AuditableModel {
     private Double price;
 
     //contructor
+    public Subscription() {
 
+    }
     public Subscription(String name, Double price,String description) {
         this.name = new NameSubsCriptionRecord(name);
         this.description = description;
@@ -31,7 +33,5 @@ public class Subscription extends AuditableModel {
     }
 
 
-    public Subscription() {
 
-    }
 }
