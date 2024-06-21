@@ -3,14 +3,20 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.do
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates.Sowing;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.SowingCondition;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.SowingSoilMoisture;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.SowingStemCondition;
 
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
 @Embeddable
-public class SowingControl {
+public class SowingControl extends AuditableModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +30,19 @@ public class SowingControl {
     private Date controlDate;
 
     @NotNull
-    private String conditionDescription;
+    private SowingCondition sowingCondition;
     @NotNull
-    private String stemDescription;
+    private SowingSoilMoisture sowingSoilMoisture;
     @NotNull
-    private String soilMoistureDescription;
+    private SowingStemCondition sowingStemCondition;
 
 
-    public SowingControl(Sowing sowing, String conditionDescription, String stemDescription, String soilMoistureDescription) {
+    public SowingControl(Sowing sowing, SowingCondition sowingCondition,SowingSoilMoisture sowingSoilMoisture, SowingStemCondition sowingStemCondition) {
         this.sowing = sowing;
-        this.conditionDescription = conditionDescription;
-        this.stemDescription = stemDescription;
-        this.soilMoistureDescription = soilMoistureDescription;
+        this.sowingCondition = sowingCondition;
+        this.sowingSoilMoisture = sowingSoilMoisture;
+        this.sowingStemCondition= sowingStemCondition;
+        controlCreated();
     }
     public SowingControl(){
     }
