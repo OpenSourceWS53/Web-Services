@@ -4,12 +4,12 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record NameSubsCriptionRecord(String subscriptionName) {
-    //Constructor
+
     public NameSubsCriptionRecord(){
         this(null);
     }
-    //Validation
-    public void validate() {
+
+    public NameSubsCriptionRecord {
         if (subscriptionName == null || subscriptionName.isBlank()) {
             throw new IllegalArgumentException("Subscription name is required");
         }

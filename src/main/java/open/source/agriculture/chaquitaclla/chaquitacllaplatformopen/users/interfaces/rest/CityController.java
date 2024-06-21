@@ -2,11 +2,8 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.inte
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command.DeleteCityCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.command.DeleteCountryCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.queries.GetAllCitysQuery;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.queries.GetAllCountrysQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.queries.GetCityByIdQuery;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.model.queries.GetCountryByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.services.CityCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.domain.services.CityQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.interfaces.rest.resources.*;

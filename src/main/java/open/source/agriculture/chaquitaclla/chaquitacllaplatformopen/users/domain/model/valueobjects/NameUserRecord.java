@@ -9,7 +9,7 @@ public record NameUserRecord(String firstName, String lastName) {
         this(null, null);
     }
     //Validation
-    public void validate() {
+    public NameUserRecord{
         if (firstName == null || firstName.isBlank()) {
             throw new IllegalArgumentException("First name is required");
         }

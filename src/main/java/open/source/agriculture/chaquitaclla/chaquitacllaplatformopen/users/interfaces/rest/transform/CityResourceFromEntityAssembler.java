@@ -5,6 +5,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.users.inter
 
 public class CityResourceFromEntityAssembler {
     public static CityResource toResourceFromEntity(City entity){
-        return new CityResource(entity.getId(),entity.getName(),entity.getId());
+        return new CityResource(entity.getId(),entity.getName(),entity.getCountry().getId());
     }
 }
