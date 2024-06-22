@@ -102,11 +102,11 @@ public class WebSecurityConfiguration {
         .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             authorizeRequests -> authorizeRequests.requestMatchers(
-                "/api/v1/authentication/**", "/v3/api-docs/**", "/swagger-ui.html",
-                "/swagger-ui/**", "/swagger-resources/**", "/webjars/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated());
+                "/api/v1/authentication/**","/api/v1/cares/**","/api/v1/crops/**", "/v3/api-docs/**", "/swagger-ui.html",
+                            "/swagger-ui/**", "/swagger-resources/**", "/webjars/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated());
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
