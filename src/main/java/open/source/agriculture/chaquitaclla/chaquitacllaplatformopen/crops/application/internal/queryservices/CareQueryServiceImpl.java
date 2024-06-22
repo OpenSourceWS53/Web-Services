@@ -36,9 +36,4 @@ public class CareQueryServiceImpl implements CareQueryService {
         return careRepository.findById(careId);
     }
 
-    @Override
-    public List<Care> findByCropId(Long cropId) {
-        return careRepository.findByCrop_Id(cropId);
-    }
-
 }

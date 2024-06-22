@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface DiseaseQueryService {
     List<Disease> handle(GetAllDiseasesQuery query);
-    List<Disease> handle(GetDiseasesByCropIdQuery query);
     Optional<Disease> findById(Long diseaseId);
 }

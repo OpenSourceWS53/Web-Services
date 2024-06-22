@@ -8,8 +8,7 @@ public class CreatePestCommandFromResourceAssembler {
         return new CreatePestCommand(
                 resource.name(),
                 resource.description(),
-                resource.solution(),
-                resource.cropId()
+                resource.solution()
         );
     }
 }

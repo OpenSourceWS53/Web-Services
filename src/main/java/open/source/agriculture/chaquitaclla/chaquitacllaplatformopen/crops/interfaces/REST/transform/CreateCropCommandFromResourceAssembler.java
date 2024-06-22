@@ -10,8 +10,10 @@ public class CreateCropCommandFromResourceAssembler {
         return new CreateCropCommand(
                 resource.name(),
                 resource.description(),
+                resource.imageUrl(),
                 resource.diseases(),
-                resource.pests()
+                resource.pests(),
+                resource.cares()
         );
     }
 }

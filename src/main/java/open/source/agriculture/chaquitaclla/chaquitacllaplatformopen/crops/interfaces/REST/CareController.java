@@ -41,10 +41,7 @@ public class CareController {
 
     @PostMapping
     public ResponseEntity<CareResource> createCare(@RequestBody CreateCareResource careResource) {
-        Crop crop = cropQueryService.findById(careResource.cropId())
-                .orElseThrow(() -> new NoSuchElementException("Crop not found"));
-
-        Care care = new Care(careResource.description(), crop);
+        Care care = new Care(careResource.description(), careResource.careDate());
         careCommandService.save(care);
 
         CareResource careResourceResponse = CareResourceFromEntityAssembler.toResourceFromEntity(care);
@@ -59,15 +56,5 @@ public class CareController {
         return ResponseEntity.ok(careResource);
     }
 
-    @GetMapping("/{cropId}")
-    public ResponseEntity<List<CareResource>> getCaresByCropId(@PathVariable Long cropId) {
-        List<Care> cares = careQueryService.findByCropId(cropId);
-        if (cares.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        List<CareResource> careResources = cares.stream()
-                .map(CareResourceFromEntityAssembler::toResourceFromEntity)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(careResources);
-    }
+
 }

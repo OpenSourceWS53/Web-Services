@@ -8,11 +8,12 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-
-
-import java.util.HashSet;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.DiseaseRepository;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CareRepository;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
@@ -29,41 +30,42 @@ public class Crop extends AuditableAbstractAggregateRoot<Crop> {
     @Size(max = 30)
     private String Name;
 
+    @Getter
+    @NotNull
+    private String ImageUrl;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "crop_diseases",
             joinColumns = @JoinColumn(name = "crop_id"),
             inverseJoinColumns = @JoinColumn(name = "disease_id"))
-    private Set<Disease> diseases;
+    private List<Disease> diseases;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "crop_pests",
-            joinColumns = @JoinColumn(name = "crop_id", foreignKey = @ForeignKey(name = "fk_crop_pests_crop")),
-            inverseJoinColumns = @JoinColumn(name = "pest_id", foreignKey = @ForeignKey(name = "fk_crop_pests_pest"))
+            joinColumns = @JoinColumn(name = "crop_id"),
+            inverseJoinColumns = @JoinColumn(name = "pest_id")
     )
-    private Set<Pest> pests;
+    private List<Pest> pests;
 
-    @OneToMany(mappedBy = "crop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Care> cares = new HashSet<>();
-
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "crop_cares",
+            joinColumns = @JoinColumn(name = "crop_id"),
+            inverseJoinColumns = @JoinColumn(name = "care_id"))
+    private List<Care> cares = new ArrayList<>();
     public Crop(){
-        diseases = new HashSet<>();
-        pests = new HashSet<>();
+        diseases = new ArrayList<>();
+        pests = new ArrayList<>();
     }
 
-    public Crop(String name, String description, Set<Disease> diseases, Set<Pest> pests){
+
+    public Crop(String name, String description, String imageUrl, List<Disease> diseases, List<Pest> pests, List<Care> cares) {
         this();
         this.Name = name;
         this.Description = description;
-        this.diseases = diseases;
-        this.pests = pests;
-    }
-
-    public Crop(String name, String description, List<Long> diseases, List<Long> pests) {
-        this();
-        this.Name = name;
-        this.Description = description;
-        this.diseases = new HashSet<>();
-        this.pests = new HashSet<>();
+        this.ImageUrl = imageUrl;
+        this.diseases = diseases != null ? diseases : new ArrayList<>();
+        this.pests = pests != null ? pests : new ArrayList<>();
+        this.cares = cares != null ? cares : new ArrayList<>();
     }
 
     public Crop addDisease(Disease disease) {
@@ -81,12 +83,12 @@ public class Crop extends AuditableAbstractAggregateRoot<Crop> {
         return this;
     }
 
-    public Crop addDiseases(Set<Disease> diseases) {
+    public Crop addDiseases(List<Disease> diseases) {
         this.diseases.addAll(diseases);
         return this;
     }
 
-    public Crop addPests(Set<Pest> pests) {
+    public Crop addPests(List<Pest> pests) {
         this.pests.addAll(pests);
         return this;
     }
@@ -108,4 +110,9 @@ public class Crop extends AuditableAbstractAggregateRoot<Crop> {
     public List<Long> getPestIds() {
         return pests.stream().map(Pest::getId).collect(Collectors.toList());
     }
+
+    public List<Long> getCareIds() {
+        return cares.stream().map(Care::getId).collect(Collectors.toList());
+    }
+
 }

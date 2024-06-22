@@ -27,10 +27,6 @@ public class PestQueryServiceImpl implements PestQueryService {
         return pestRepository.findAll();
     }
 
-    @Override
-    public List<Pest> handle(GetPestByCropIdQuery query) {
-        return pestRepository.findByCropId(query.cropId());
-    }
 
     @Override
     public Optional<Pest> findById(Long pestId) {

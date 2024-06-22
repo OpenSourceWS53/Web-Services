@@ -6,6 +6,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.inter
 public class CareResourceFromEntityAssembler {
 
     public static CareResource toResourceFromEntity(Care entity) {
-        return new CareResource(entity.getId(), entity.getDescription(), entity.getCropId());
+        return new CareResource(entity.getId(), entity.getDescription(),entity.getCareDate());
     }
 }
