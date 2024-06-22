@@ -4,5 +4,5 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.doma
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.CropId;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.valueobjects.ProfileId;
 
-public record CreateSowingCommand(DateRange dateRange, CropId cropId, Integer areaLand, ProfileId profileId){
+public record CreateSowingCommand(Integer cropId, Integer areaLand){
 }

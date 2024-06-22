@@ -6,10 +6,8 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.int
 public class CreateSowingCommandFromResourceAssembler {
     public static CreateSowingCommand fromResource(CreateSowingResource resource) {
         return new CreateSowingCommand(
-                resource.dateRange(),
                 resource.cropId(),
-                resource.areaLand(),
-                resource.profileId()
+                resource.areaLand()
         );
     }
 }

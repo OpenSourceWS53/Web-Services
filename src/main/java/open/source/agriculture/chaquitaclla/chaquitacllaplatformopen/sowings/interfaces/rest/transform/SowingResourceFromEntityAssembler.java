@@ -7,14 +7,14 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.int
 
 public class SowingResourceFromEntityAssembler {
     public static SowingResource fromEntity(Sowing sowing) {
-        CropId cropId = new CropId(sowing.getCropId().cropId());
-        ProfileId profileId = new ProfileId(sowing.getProfileId().profileId());
         return new SowingResource(
                 sowing.getId(),
-                sowing.getDateRange(),
-                cropId,
+                sowing.getDateRange(), // Asegúrate de que DateRange tiene un método toString() adecuado
+                sowing.getProfileId().profileId().intValue(), // Convierte ProfileId a Integer
                 sowing.getAreaLand(),
-                profileId
+                sowing.isStatus(),
+                sowing.getCropId().cropId().intValue(),
+                sowing.getPhenologicalPhase().ordinal()
         );
     }
 }
