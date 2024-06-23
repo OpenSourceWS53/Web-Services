@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.commands.CreateProductCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.entities.SowingAssociation;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.valueobjects.ProductType;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates.Sowing;
 
-import java.util.Set;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -22,18 +22,30 @@ public class Product {
     private String name;
 
     @NotNull
-    private String description;
+    private Long quantity;
 
     @NotNull
     private ProductType productType;
 
-    @OneToMany(mappedBy = "product")
-    Set<SowingAssociation> associations;
+    @NotNull
+    private LocalDate appliedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "sowing_id", insertable = false, updatable = false)
+    private Sowing sowing;
+
+    @NotNull
+    @Column(name = "sowing_id")
+    private Long sowingId;
 
     public Product(CreateProductCommand command) {
         this.name = command.name();
-        this.description = command.description();
+        this.quantity = command.quantity();
         this.productType = command.productType();
+        this.appliedDate = LocalDate.now();
+        this.sowingId = command.sowingId();
     }
+    public Product(){
 
+    }
 }

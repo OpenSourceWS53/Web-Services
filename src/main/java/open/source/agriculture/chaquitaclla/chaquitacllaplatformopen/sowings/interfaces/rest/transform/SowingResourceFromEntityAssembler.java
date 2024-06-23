@@ -9,8 +9,8 @@ public class SowingResourceFromEntityAssembler {
     public static SowingResource fromEntity(Sowing sowing) {
         return new SowingResource(
                 sowing.getId(),
-                sowing.getDateRange(), // Asegúrate de que DateRange tiene un método toString() adecuado
-                sowing.getProfileId().profileId().intValue(), // Convierte ProfileId a Integer
+                sowing.getDateRange(),
+                sowing.getProfileId().profileId().intValue(),
                 sowing.getAreaLand(),
                 sowing.isStatus(),
                 sowing.getCropId().cropId().intValue(),

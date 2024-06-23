@@ -2,5 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.i
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.valueobjects.ProductType;
 
-public record ProductResource(Long id, String name, String description, ProductType productType) {
+import java.time.LocalDate;
+
+public record ProductResource(Long id, Long sowingId,String name, Long quantity, LocalDate appliedDate,ProductType productType) {
 }

@@ -2,10 +2,12 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.in
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.DeleteSowingControlBySowingIdCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetSowingByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetSowingControlByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetSowingControlsBySowingIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingControlCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingControlQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.CreateSowingControlResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.SowingControlResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.CreateSowingControlCommandFromResourceAssembler;
@@ -24,10 +26,14 @@ import java.util.stream.Collectors;
 public class SowingControlsController {
     private final SowingControlCommandService sowingControlCommandService;
     private final SowingControlQueryService sowingControlQueryService;
+    private final SowingQueryService sowingQueryService;
 
-    public SowingControlsController(SowingControlCommandService sowingControlCommandService, SowingControlQueryService sowingControlQueryService) {
+    public SowingControlsController(SowingControlCommandService sowingControlCommandService,
+                                    SowingControlQueryService sowingControlQueryService,
+                                    SowingQueryService sowingQueryService) {
         this.sowingControlCommandService = sowingControlCommandService;
         this.sowingControlQueryService = sowingControlQueryService;
+        this.sowingQueryService = sowingQueryService;
     }
 
    @PostMapping("/{sowingId}/controls")
@@ -61,10 +67,20 @@ public ResponseEntity<SowingControlResource> createSowingControl(@PathVariable L
     }
     @DeleteMapping("/{sowingId}/controls/{sowingControlId}")
     public ResponseEntity<?> deleteSowingControl(@PathVariable Long sowingId, @PathVariable Long sowingControlId) {
-    var deleteSowingControlCommand = new DeleteSowingControlBySowingIdCommand(sowingId, sowingControlId);
-    sowingControlCommandService.handle(deleteSowingControlCommand);
-    return ResponseEntity.ok("SowingControl with given id successfully deleted");
-}
+        // Verificar si existe un Sowing con el sowingId proporcionado
+        var getSowingByIdQuery = new GetSowingByIdQuery(sowingId);
+        var sowingOptional = sowingQueryService.handle(getSowingByIdQuery);
+
+        if (sowingOptional.isEmpty()) {
+            // Si no existe, devolver un error
+            return ResponseEntity.badRequest().body("No se encontró un Sowing con el ID proporcionado: " + sowingId);
+        }
+
+        // Si el Sowing existe, proceder a eliminar el control
+        var deleteSowingControlCommand = new DeleteSowingControlBySowingIdCommand(sowingId, sowingControlId);
+        sowingControlCommandService.handle(deleteSowingControlCommand);
+        return ResponseEntity.ok("SowingControl with given id successfully deleted");
+    }
     /*@GetMapping
     public ResponseEntity<List<Object>> getAllSowingControls() {
         var getAllSowingControlsQuery = new GetAllSowingControlsQuery();

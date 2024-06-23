@@ -6,7 +6,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 
 import java.util.Date;
 
-public record SowingControlResource(Long Id,
+public record SowingControlResource(Long id,
                                     Long sowingId,
                                     Date controlDate,
                                     SowingCondition sowingCondition,

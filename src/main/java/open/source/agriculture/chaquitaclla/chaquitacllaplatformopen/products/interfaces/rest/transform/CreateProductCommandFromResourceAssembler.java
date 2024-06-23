@@ -5,6 +5,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.in
 
 public class CreateProductCommandFromResourceAssembler {
     public static CreateProductCommand toCommandFromResource(CreateProductResource resource) {
-        return new CreateProductCommand(resource.name(), resource.description(), resource.productType());
+        return new CreateProductCommand(resource.sowingId(),resource.name(), resource.quantity(), resource.productType());
     }
 }

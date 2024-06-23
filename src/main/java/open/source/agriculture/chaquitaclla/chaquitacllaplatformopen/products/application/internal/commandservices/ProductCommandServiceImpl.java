@@ -3,7 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.a
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.aggregates.Product;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.commands.CreateProductCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.commands.DeleteProductCommand;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.services.ProductCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.services.ProductCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.infrastructure.persistence.jpa.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 

@@ -47,12 +47,8 @@ public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
     @Embedded
     private CropId cropId;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "sowing_products",
-            joinColumns = @JoinColumn(name = "sowing_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    @OneToMany(mappedBy = "sowing", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> sowingProducts;
 
     @Getter
     private PhenologicalPhase phenologicalPhase;
