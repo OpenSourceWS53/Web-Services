@@ -39,11 +39,11 @@ public class Product {
     private Long sowingId;
 
     public Product(CreateProductCommand command) {
+        this.sowingId = command.sowingId();
         this.name = command.name();
         this.quantity = command.quantity();
         this.productType = command.productType();
         this.appliedDate = LocalDate.now();
-        this.sowingId = command.sowingId();
     }
     public Product(){
 

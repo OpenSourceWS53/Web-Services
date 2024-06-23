@@ -27,7 +27,7 @@ public class ProductController {
         this.productQueryService = productQueryService;
     }
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<ProductResource> createProduct(@RequestBody CreateProductResource resource) {
         var createProductCommand = CreateProductCommandFromResourceAssembler.toCommandFromResource(resource);
         Long productId = productCommandService.handle(createProductCommand);
@@ -36,7 +36,7 @@ public class ProductController {
         var productResource = ProductResourceFromEntityAssembler.toResourceFromEntity(product.get());
         return new ResponseEntity<>(productResource, HttpStatus.CREATED);
     }
-
+*/
     @GetMapping("/{id}")
     public ResponseEntity<ProductResource> getProductById(@RequestParam Long id) {
         return productQueryService.handle(new GetProductByIdQuery(id))

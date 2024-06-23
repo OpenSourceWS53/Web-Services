@@ -91,7 +91,7 @@ public class SowingsController {
         }
 
         // Create the product
-        var createProductCommand = CreateProductCommandFromResourceAssembler.toCommandFromResource(createProductResource);
+        var createProductCommand = CreateProductCommandFromResourceAssembler.toCommandFromResource(sowingId, createProductResource);
         var productId = productCommandService.handle(createProductCommand);
         if(productId == 0L) return ResponseEntity.badRequest().build();
 
@@ -102,5 +102,44 @@ public class SowingsController {
         var productResourceCreated = ProductResourceFromEntityAssembler.toResourceFromEntity(product);
 
         return new ResponseEntity<>(productResourceCreated, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{sowingId}/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long sowingId, @PathVariable Long productId) {
+        // Check if the sowing exists
+        var sowing = sowingRepository.findById(sowingId);
+        if (sowing.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Check if the product exists
+        var product = productRepository.findById(productId);
+        if (product.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Delete the product
+        productRepository.deleteById(productId);
+
+        return ResponseEntity.ok("Product with given id successfully deleted.");
+    }
+
+    @GetMapping("/{sowingId}/products")
+    public ResponseEntity<List<ProductResource>> getProductsBySowingId(@PathVariable Long sowingId) {
+        // Check if the sowing exists
+        var sowing = sowingRepository.findById(sowingId);
+        if (sowing.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Retrieve the products for the sowing
+        var products = productRepository.findBySowingId(sowingId);
+
+        // Convert the Product entities to ProductResources
+        var productResources = products.stream()
+                .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(productResources);
     }
 }
