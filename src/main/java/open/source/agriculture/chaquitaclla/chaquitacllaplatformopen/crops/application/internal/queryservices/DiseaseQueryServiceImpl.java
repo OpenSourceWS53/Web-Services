@@ -28,11 +28,6 @@ public class DiseaseQueryServiceImpl implements DiseaseQueryService {
     }
 
     @Override
-    public List<Disease> handle(GetDiseasesByCropIdQuery query) {
-        return diseaseRepository.findByCropId(query.cropId());
-    }
-
-    @Override
     public Optional<Disease> findById(Long diseaseId) {
         return diseaseRepository.findById(Math.toIntExact(diseaseId));
     }

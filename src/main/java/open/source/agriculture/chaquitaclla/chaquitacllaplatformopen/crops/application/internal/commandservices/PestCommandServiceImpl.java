@@ -1,6 +1,7 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.application.internal.commandservices;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreatePestCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Care;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.PestCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
@@ -19,8 +20,14 @@ public class PestCommandServiceImpl implements PestCommandService {
 
     @Override
     public Long handle(CreatePestCommand command) {
-        Pest pest = new Pest(command.name(), command.description(), command.solution(), command.cropId());
+        Pest pest = new Pest(command.name(), command.description(), command.solution());
         pest = pestRepository.save(pest);
         return pest.getId();
     }
+
+    @Override
+    public void save(Pest pest) {
+        pestRepository.save(pest);
+    }
+
 }

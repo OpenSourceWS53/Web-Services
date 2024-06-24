@@ -1,4 +1,4 @@
-package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.services;
+package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.services;
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.commands.CreateProductCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.commands.DeleteProductCommand;

@@ -8,7 +8,7 @@ public class CreateCareCommandFromResourceAssembler {
     public static CreateCareCommand toCommandFromResource(CreateCareResource resource) {
         return new CreateCareCommand(
                 resource.description(),
-                resource.cropId()
+                resource.careDate()
         );
     }
 }

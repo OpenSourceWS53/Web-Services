@@ -7,8 +7,8 @@ import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -16,9 +16,6 @@ public class Pest extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Getter
-    private final Long cropId;
 
     @NotNull
     @Size(max = 30)
@@ -32,17 +29,15 @@ public class Pest extends AuditableModel {
     @Size(max = 500)
     private String Solution;
 
-    @ManyToMany(mappedBy = "pests")
-    private Set<Crop> crops = new HashSet<>();
 
-    public Pest(String Name, String Description, String Solution, Long cropId){
+
+    public Pest(String Name, String Description, String Solution){
         this.Name = Name;
         this.Description = Description;
         this.Solution = Solution;
-        this.cropId = cropId;
     }
     public Pest(){
-        this.cropId = null;
+
     }
 
 }

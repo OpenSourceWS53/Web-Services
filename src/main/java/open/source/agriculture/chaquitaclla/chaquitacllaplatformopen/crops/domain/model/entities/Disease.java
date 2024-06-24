@@ -7,8 +7,8 @@ import lombok.Getter;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.entities.AuditableModel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -34,17 +34,13 @@ public class Disease extends AuditableModel {
     @Size(max = 500)
     private String Solution;
 
-    @ManyToMany(mappedBy = "diseases")
-    private Set<Crop> crops = new HashSet<>();
-
-    public Disease(String Name, String Description, String Solution, Long cropId){
+    public Disease(String Name, String Description, String Solution){
         this.Name = Name;
         this.Description = Description;
         this.Solution = Solution;
-        this.cropId = cropId;
     }
 
     public Disease(){
-        this.cropId = null;
+
     }
 }

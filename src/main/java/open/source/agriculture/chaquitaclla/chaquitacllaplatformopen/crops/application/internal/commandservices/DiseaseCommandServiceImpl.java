@@ -2,6 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.appl
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.CreateDiseaseCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.DiseaseCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.DiseaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ public class DiseaseCommandServiceImpl implements DiseaseCommandService {
 
     @Override
     public Long handle(CreateDiseaseCommand command) {
-        Disease disease = new Disease(command.name(), command.description(), command.solution(), command.cropId());
+        Disease disease = new Disease(command.name(), command.description(), command.solution());
         disease = diseaseRepository.save(disease);
         return disease.getId();
+    }
+    @Override
+    public void save(Disease disease) {
+        diseaseRepository.save(disease);
     }
 }

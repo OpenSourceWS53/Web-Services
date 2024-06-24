@@ -9,8 +9,7 @@ public class PestResourceFromEntityAssembler {
                 Entity.getId(),
                 Entity.getName(),
                 Entity.getDescription(),
-                Entity.getSolution(),
-                Entity.getCropId()
+                Entity.getSolution()
         );
     }
 }

@@ -15,6 +15,8 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Setter
 @Entity
@@ -45,13 +47,10 @@ public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
     @Embedded
     private CropId cropId;
 
+    @OneToMany(mappedBy = "sowing", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> sowingProducts;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "sowing_products",
-            joinColumns = @JoinColumn(name = "sowing_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
-
+    @Getter
     private PhenologicalPhase phenologicalPhase;
 
 
@@ -65,11 +64,13 @@ public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
     protected Sowing() {
 
     }
-    public Sowing(DateRange dateRange, int areaLand, ProfileId profileId){
-        this.dateRange = dateRange;
+    public Sowing(CropId cropId,Integer areaLand){
+        LocalDate startDate = LocalDate.now();
+        this.dateRange = new DateRange(startDate, 6);
         this.areaLand = areaLand;
-        this.profileId= profileId;
+        this.cropId = cropId;
         this.phenologicalPhase = PhenologicalPhase.GERMINATION;
+        this.profileId = new ProfileId(0L);
     }
 
 

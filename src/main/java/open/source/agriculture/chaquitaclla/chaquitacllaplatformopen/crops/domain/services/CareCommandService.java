@@ -4,8 +4,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Care;
 
 public interface CareCommandService {
-    void createCare(CreateCareCommand command);
-
     Long handle(CreateCareCommand command);
 
     void save(Care care);

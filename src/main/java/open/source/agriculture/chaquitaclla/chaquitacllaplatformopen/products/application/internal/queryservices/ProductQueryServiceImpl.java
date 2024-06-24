@@ -3,7 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.a
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.aggregates.Product;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.queries.GetProductByIdQuery;
-import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.model.services.ProductQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.domain.services.ProductQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.infrastructure.persistence.jpa.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 

@@ -14,6 +14,5 @@ public interface CareQueryService {
 
     Optional<Care> findById(Long careId);
 
-    List<Care> findByCropId(Long cropId);
 
 }

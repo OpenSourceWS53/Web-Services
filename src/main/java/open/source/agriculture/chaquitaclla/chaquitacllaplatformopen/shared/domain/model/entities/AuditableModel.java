@@ -14,6 +14,7 @@ import java.util.Date;
 @MappedSuperclass
 @Data
 public class AuditableModel {
+
     @CreatedDate
     @Column(nullable = true, updatable = false)
     private Date createdAt;

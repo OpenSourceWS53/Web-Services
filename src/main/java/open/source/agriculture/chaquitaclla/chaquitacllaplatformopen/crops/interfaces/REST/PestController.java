@@ -2,6 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.inte
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Care;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetAllPestsQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
@@ -9,8 +10,11 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domai
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.PestCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.PestQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CareResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreateCareResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.CreatePestResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.resources.PestResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CareResourceFromEntityAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.CreatePestCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.interfaces.REST.transform.PestResourceFromEntityAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,23 +46,15 @@ public class PestController {
         this.cropCommandService = cropCommandService;
     }
 
+
     @PostMapping
-    public ResponseEntity<PestResource> createPest(@RequestBody CreatePestResource resource) {
-        var createPestCommand = CreatePestCommandFromResourceAssembler.toCommandFromResource(resource);
-        Crop crop = cropQueryService.findById(createPestCommand.cropId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Crop not found"));
+    public ResponseEntity<PestResource> createPest(@RequestBody CreatePestResource pestResource) {
+        Pest pest = new Pest(pestResource.name(),pestResource.description(),pestResource.solution());
+        pestCommandService.save(pest);
 
-        Long pestId = pestCommandService.handle(createPestCommand);
-        PestResource pestResource = new PestResource(pestId, resource.name(), resource.description(), resource.solution(), resource.cropId());
-
-        crop.addPest(pestQueryService.findById(pestId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pest not found")));
-
-        cropCommandService.save(crop);
-
-        return new ResponseEntity<>(pestResource, HttpStatus.CREATED);
+        PestResource pestResourceResponse = PestResourceFromEntityAssembler.toResourceFromEntity(pest);
+        return ResponseEntity.ok(pestResourceResponse);
     }
-
     @GetMapping
     public ResponseEntity<List<PestResource>> getAllPests() {
         var getAllPestsQuery = new GetAllPestsQuery();
@@ -67,15 +63,5 @@ public class PestController {
         return ResponseEntity.ok(pestResource);
     }
 
-    @GetMapping("/{cropId}")
-    public ResponseEntity<List<PestResource>> getPestsByCropId(@PathVariable Long cropId) {
-        List<Pest> pests = pestRepository.findByCropId(cropId);
-        if (pests.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        List<PestResource> pestResources = pests.stream()
-                .map(PestResourceFromEntityAssembler::toResourceFromEntity)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(pestResources);
-    }
+
 }

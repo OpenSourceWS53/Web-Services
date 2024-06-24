@@ -5,6 +5,6 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.products.in
 
 public class ProductResourceFromEntityAssembler {
     public static ProductResource toResourceFromEntity(Product product) {
-        return new ProductResource(product.getId(), product.getName(),  product.getDescription(), product.getProductType());
+        return new ProductResource(product.getId(), product.getSowingId(), product.getName(), product.getQuantity(), product.getAppliedDate(), product.getProductType());
     }
 }

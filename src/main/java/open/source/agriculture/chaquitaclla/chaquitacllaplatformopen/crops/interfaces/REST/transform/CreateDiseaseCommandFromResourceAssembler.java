@@ -9,8 +9,7 @@ public class CreateDiseaseCommandFromResourceAssembler {
         return new CreateDiseaseCommand(
                 resource.name(),
                 resource.description(),
-                resource.solution(),
-                resource.cropId()
+                resource.solution()
         );
     }
 }

@@ -3,12 +3,14 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.inte
 import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.aggregates.Crop;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.commands.DeleteCropCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Care;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Disease;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.entities.Pest;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetAllCropsQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.model.queries.GetCropByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.domain.services.CropQueryService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CareRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.CropRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.DiseaseRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.crops.infrastructure.persistence.jpa.repositories.PestRepository;
@@ -45,6 +47,9 @@ public class CropController {
     @Autowired
     private PestRepository pestRepository;
 
+    @Autowired
+    private CareRepository careRepository;
+
     public CropController(CropCommandService cropCommandService, CropQueryService cropQueryService) {
         this.cropCommandService = cropCommandService;
         this.cropQueryService = cropQueryService;
@@ -52,17 +57,22 @@ public class CropController {
 
     @PostMapping
     public ResponseEntity<CropResource> createCrop(@RequestBody CreateCropResource resource) {
-        Set<Disease> diseases = resource.diseases().stream()
+        List<Disease> diseases = resource.diseases().stream()
                 .map(diseaseId -> diseaseRepository.findById(Math.toIntExact(diseaseId))
                         .orElseThrow(() -> new NoSuchElementException("Disease not found")))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<Pest> pests = resource.pests().stream()
+        List<Pest> pests = resource.pests().stream()
                 .map(pestId -> pestRepository.findById(Math.toIntExact(pestId))
                         .orElseThrow(() -> new NoSuchElementException("Pest not found")))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Crop crop = new Crop(resource.name(), resource.description(), diseases, pests);
+        List<Care> cares = resource.cares().stream()
+                .map(careId -> careRepository.findById(careId)
+                        .orElseThrow(() -> new NoSuchElementException("Care not found")))
+                .collect(Collectors.toList());
+
+        Crop crop = new Crop(resource.name(), resource.description(), resource.imageUrl(), diseases, pests, cares);
         cropRepository.save(crop);
 
         CropResource cropResourceResponse = CropResourceFromEntityAssembler.toResourceFromEntity(crop);
@@ -72,7 +82,7 @@ public class CropController {
     @GetMapping("/{id}")
     public ResponseEntity<CropResource> getCrop(@PathVariable Long id) {
         return cropQueryService.handle(new GetCropByIdQuery(id))
-                .map(crop -> new CropResource(crop.getId(), crop.getName(), crop.getDescription(), crop.getDiseaseIds(), crop.getPestIds()))
+                .map(crop -> new CropResource(crop.getId(), crop.getName(), crop.getDescription(), crop.getImageUrl(), crop.getDiseaseIds(), crop.getPestIds(),crop.getCareIds()))
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

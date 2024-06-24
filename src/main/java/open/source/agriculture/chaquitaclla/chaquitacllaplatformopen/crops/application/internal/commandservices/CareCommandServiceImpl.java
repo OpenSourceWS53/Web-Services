@@ -17,24 +17,16 @@ public class CareCommandServiceImpl implements CareCommandService {
         this.careRepository = careRepository;
     }
 
-    @Override
-    public void createCare(CreateCareCommand command) {
-        createAndSaveCare(command);
-    }
 
     @Override
     public Long handle(CreateCareCommand command) {
-        return createAndSaveCare(command).getId();
+        Care care = new Care(command.description(), command.careDate());
+        care = careRepository.save(care);
+        return care.getId();
     }
-
     @Override
     public void save(Care care) {
         careRepository.save(care);
     }
 
-    private Care createAndSaveCare(CreateCareCommand command) {
-        Care care = new Care(command.cropId(), command.description());
-        careRepository.save(care);
-        return care;
-    }
 }
