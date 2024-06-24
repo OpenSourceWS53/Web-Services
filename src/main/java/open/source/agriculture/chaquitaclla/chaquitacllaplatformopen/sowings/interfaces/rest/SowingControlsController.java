@@ -2,6 +2,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.in
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.DeleteSowingControlBySowingIdCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetAllSowingControlsQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetSowingByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetSowingControlByIdQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.queries.GetSowingControlsBySowingIdQuery;
@@ -80,6 +81,16 @@ public ResponseEntity<SowingControlResource> createSowingControl(@PathVariable L
         var deleteSowingControlCommand = new DeleteSowingControlBySowingIdCommand(sowingId, sowingControlId);
         sowingControlCommandService.handle(deleteSowingControlCommand);
         return ResponseEntity.ok("SowingControl with given id successfully deleted");
+    }
+
+    @GetMapping("/controls")
+    public ResponseEntity<List<SowingControlResource>> getAllSowingControls() {
+        var getAllSowingControlsQuery = new GetAllSowingControlsQuery();
+        var sowingControls = sowingControlQueryService.handle(getAllSowingControlsQuery);
+        var sowingControlResources = sowingControls.stream()
+                .map(SowingControlResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(sowingControlResources);
     }
     /*@GetMapping
     public ResponseEntity<List<Object>> getAllSowingControls() {
