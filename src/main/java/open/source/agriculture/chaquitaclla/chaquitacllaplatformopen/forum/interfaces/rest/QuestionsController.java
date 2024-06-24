@@ -74,10 +74,10 @@ public class QuestionsController {
     }
 
     @DeleteMapping("/{questionId}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable Long questionId){
+    public ResponseEntity deleteQuestion(@PathVariable Long questionId){
         var deleteQuestionCommand = new DeleteQuestionCommand(questionId);
         questionCommandService.handle(deleteQuestionCommand);
-        return ResponseEntity.ok("Question with given id successfully deleted.");
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping()

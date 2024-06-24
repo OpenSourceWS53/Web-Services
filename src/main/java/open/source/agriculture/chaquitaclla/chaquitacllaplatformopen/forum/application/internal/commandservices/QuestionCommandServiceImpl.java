@@ -1,15 +1,18 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.application.internal.commandservices;
 
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Answer;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.aggregates.Question;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.CreateQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.DeleteQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.commands.UpdateQuestionCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.model.entities.Category;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.domain.services.QuestionCommandService;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.infrastructure.persistence.jpa.repositories.AnswerRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.infrastructure.persistence.jpa.repositories.CategoryRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.forum.infrastructure.persistence.jpa.repositories.QuestionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,9 +20,11 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
 
     private final QuestionRepository questionRepository;
     private final CategoryRepository categoryRepository;
-    public QuestionCommandServiceImpl(QuestionRepository questionRepository, CategoryRepository categoryRepository) {
+    private final AnswerRepository answerRepository;
+    public QuestionCommandServiceImpl(QuestionRepository questionRepository, CategoryRepository categoryRepository, AnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
         this.categoryRepository = categoryRepository;
+        this.answerRepository = answerRepository;
     }
 
 
@@ -65,6 +70,10 @@ public class QuestionCommandServiceImpl implements QuestionCommandService {
             throw new IllegalArgumentException("Question does not exist");
         }
         try {
+            List<Answer> answers = answerRepository.findByQuestionId(command.questionId());
+
+            answerRepository.deleteAll(answers);
+
             questionRepository.deleteById(command.questionId());
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while deleting question: " + e.getMessage());
