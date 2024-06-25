@@ -11,8 +11,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingQueryService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.CreateSowingControlResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.SowingControlResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.UpdateSowingControlResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.CreateSowingControlCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.SowingControlResourceFromEntityAssembler;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.UpdateSowingControlCommandFromResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +93,22 @@ public ResponseEntity<SowingControlResource> createSowingControl(@PathVariable L
                 .map(SowingControlResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(sowingControlResources);
+    }
+    @PutMapping("/{sowingId}/controls/{sowingControlId}")
+    public ResponseEntity<SowingControlResource> updateSowingControl(@PathVariable Long sowingId, @PathVariable Long sowingControlId, @RequestBody UpdateSowingControlResource updateSowingControlResource) {
+        var updateSowingControlCommand = UpdateSowingControlCommandFromResourceAssembler.fromResource(updateSowingControlResource,sowingId, sowingControlId);
+        sowingControlCommandService.handle(updateSowingControlCommand);
+
+        var getSowingControlByIdQuery = new GetSowingControlByIdQuery(sowingControlId);
+        var sowingControlOptional = sowingControlQueryService.handle(getSowingControlByIdQuery);
+
+        if(sowingControlOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
+
+        var sowingControlEntity = sowingControlOptional.get();
+        var sowingControlResourceResponse = SowingControlResourceFromEntityAssembler.toResourceFromEntity(sowingControlEntity);
+
+        return ResponseEntity.ok(sowingControlResourceResponse);
     }
     /*@GetMapping
     public ResponseEntity<List<Object>> getAllSowingControls() {

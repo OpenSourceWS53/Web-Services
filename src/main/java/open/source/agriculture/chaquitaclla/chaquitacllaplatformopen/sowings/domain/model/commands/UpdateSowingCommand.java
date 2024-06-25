@@ -2,5 +2,5 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.do
 
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.shared.domain.model.valueobjects.DateRange;
 
-public record UpdateSowingCommand(Long Id, DateRange dateRange, int areaLand) {
+public record UpdateSowingCommand(Long Id, Integer cropId, Integer areaLand) {
 }

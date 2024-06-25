@@ -3,6 +3,7 @@ package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.ap
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.aggregates.Sowing;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.CreateSowingControlCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.DeleteSowingControlBySowingIdCommand;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.commands.UpdateSowingControlCommand;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.model.entities.SowingControl;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.domain.services.SowingControlCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.infrastructure.persistence.jpa.repositories.SowingControlRepository;
@@ -20,6 +21,17 @@ public class SowingControlCommandServiceImpl implements SowingControlCommandServ
         this.sowingControlsRepository = sowingControlsRepository;
     }
 
+    @Override
+    public void handle(UpdateSowingControlCommand command) {
+        SowingControl sowingControl = sowingControlsRepository.findByIdAndSowingId(command.sowingControlId(), command.sowingId())
+                .orElseThrow(() -> new IllegalArgumentException("Sowing Control with id " + command.sowingControlId() + " and Sowing id " + command.sowingId() + " does not exist"));
+
+        sowingControl.setSowingCondition(command.sowingCondition());
+        sowingControl.setSowingSoilMoisture(command.sowingSoilMoisture());
+        sowingControl.setSowingStemCondition(command.sowingStemCondition());
+
+        sowingControlsRepository.save(sowingControl);
+    }
     @Override
     public Long handle(CreateSowingControlCommand command) {
         Sowing sowing = sowingRepository.findById(command.sowingId())

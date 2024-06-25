@@ -36,11 +36,10 @@ public class SowingCommandServiceImpl implements SowingCommandService {
             throw new IllegalArgumentException("Sowing does not exist");
 
         var sowingToUpdate = sowingRepository.findById(command.Id()).get();
-
-
-        sowingToUpdate.setDateRange(command.dateRange());
+        Integer cropIdInteger = command.cropId();
+        CropId cropId = new CropId(Long.valueOf(cropIdInteger));
+        sowingToUpdate.setCropId(cropId);
         sowingToUpdate.setAreaLand(command.areaLand());
-
         var updatedSowing = sowingRepository.save(sowingToUpdate);
 
         return Optional.of(updatedSowing);

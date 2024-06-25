@@ -19,8 +19,10 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.dom
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.infrastructure.persistence.jpa.repositories.SowingRepository;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.CreateSowingResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.SowingResource;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.resources.UpdateSowingResource;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.CreateSowingCommandFromResourceAssembler;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.SowingResourceFromEntityAssembler;
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.sowings.interfaces.rest.transform.UpdateSowingCommandFromResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,10 +60,8 @@ public class SowingsController {
         var sowingId = sowingCommandService.handle(createSowingCommand);
         if(sowingId == 0L) return ResponseEntity.badRequest().build();
 
-        // Retrieve the newly created Sowing from the database
         var sowing = sowingRepository.findById(sowingId).orElseThrow();
 
-        // Convert the Sowing entity to a SowingResource
         var sowingResourceCreated = SowingResourceFromEntityAssembler.fromEntity(sowing);
 
         return new ResponseEntity<>(sowingResourceCreated, HttpStatus.CREATED);
@@ -75,6 +75,19 @@ public class SowingsController {
                 .toList();
         return ResponseEntity.ok(sowingResource);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<SowingResource> updateSowing(@PathVariable Long id, @RequestBody UpdateSowingResource updateSowingResource) {
+        var updateSowingCommand = UpdateSowingCommandFromResourceAssembler.fromResource(id, updateSowingResource);
+        var updatedSowing = sowingCommandService.handle(updateSowingCommand);
+
+        if (updatedSowing.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var updatedSowingResource = SowingResourceFromEntityAssembler.fromEntity(updatedSowing.get());
+
+        return ResponseEntity.ok(updatedSowingResource);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<SowingResource> getSowing(@PathVariable Long id) {
         return sowingQueryService.handle(new GetSowingByIdQuery(id))
@@ -84,26 +97,32 @@ public class SowingsController {
     }
     @PostMapping("/{sowingId}/products")
     public ResponseEntity<ProductResource> createProduct(@PathVariable Long sowingId, @RequestBody CreateProductResource createProductResource) {
-        // Check if the sowing exists
         var sowing = sowingRepository.findById(sowingId);
         if (sowing.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Create the product
         var createProductCommand = CreateProductCommandFromResourceAssembler.toCommandFromResource(sowingId, createProductResource);
         var productId = productCommandService.handle(createProductCommand);
         if(productId == 0L) return ResponseEntity.badRequest().build();
 
-        // Retrieve the newly created Product from the database
         var product = productRepository.findById(productId).orElseThrow();
 
-        // Convert the Product entity to a ProductResource
         var productResourceCreated = ProductResourceFromEntityAssembler.toResourceFromEntity(product);
 
         return new ResponseEntity<>(productResourceCreated, HttpStatus.CREATED);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSowing(@PathVariable Long id) {
+        var sowing = sowingRepository.findById(id);
+        if (sowing.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
+        sowingRepository.deleteById(id);
+
+        return ResponseEntity.ok("Sowing with given id successfully deleted.");
+    }
     @DeleteMapping("/{sowingId}/products/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long sowingId, @PathVariable Long productId) {
         // Check if the sowing exists
@@ -112,13 +131,11 @@ public class SowingsController {
             return ResponseEntity.notFound().build();
         }
 
-        // Check if the product exists
         var product = productRepository.findById(productId);
         if (product.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Delete the product
         productRepository.deleteById(productId);
 
         return ResponseEntity.ok("Product with given id successfully deleted.");
@@ -126,16 +143,13 @@ public class SowingsController {
 
     @GetMapping("/{sowingId}/products")
     public ResponseEntity<List<ProductResource>> getProductsBySowingId(@PathVariable Long sowingId) {
-        // Check if the sowing exists
         var sowing = sowingRepository.findById(sowingId);
         if (sowing.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Retrieve the products for the sowing
         var products = productRepository.findBySowingId(sowingId);
 
-        // Convert the Product entities to ProductResources
         var productResources = products.stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
