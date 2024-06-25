@@ -7,6 +7,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.iam.domain.
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.iam.domain.model.queries.GetUserByUsernameQuery;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.iam.domain.services.UserCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.iam.domain.services.UserQueryService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  * </p>
  *
  */
+@Service
 public class IamContextFacade {
 
   private final UserCommandService userCommandService;
