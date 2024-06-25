@@ -23,7 +23,7 @@ public class CityCommandServiceImpl implements CityCommandService {
     }
 
     @Override
-    public Long Handle(CreateCityCommand command) {
+    public Long handle(CreateCityCommand command) {
         Country country = countryRepository
                 .findById(command.countryId())
                 .orElseThrow(()
@@ -32,6 +32,7 @@ public class CityCommandServiceImpl implements CityCommandService {
         cityRepository.save(city);
         return city.getId();
     }
+
 
     @Override
     public Optional<City> handle(UpdateCityCommand command) {

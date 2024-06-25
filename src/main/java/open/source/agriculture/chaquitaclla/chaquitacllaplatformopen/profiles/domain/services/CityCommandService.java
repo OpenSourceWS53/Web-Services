@@ -8,7 +8,7 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.do
 import java.util.Optional;
 
 public interface CityCommandService {
-    Long Handle(CreateCityCommand command);
+    Long handle(CreateCityCommand command);
     Optional<City> handle(UpdateCityCommand command);
     void handle(DeleteCityCommand command);
 

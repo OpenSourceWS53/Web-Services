@@ -43,6 +43,5 @@ public class UserProfile extends AbstractAggregateRoot<UserProfile> {
         this.password = new PasswordUser(password);
         this.city = city;
         this.subscription = subscription;
-
     }
 }

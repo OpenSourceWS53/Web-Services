@@ -7,9 +7,11 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.do
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.domain.model.valueobjects.NameSubsCription;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.domain.services.SubscriptionCommandService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.infrastructure.persistence.jpa.repositories.SubscriptionRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class SubscriptionCommandServiceImpl implements SubscriptionCommandService {
     private final SubscriptionRepository subscriptionRepository;
 
