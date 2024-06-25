@@ -1,5 +1,6 @@
 package open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.application.internal.commandservices;
 
+import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.application.internal.outboundservices.acl.ExternalIamService;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.domain.model.aggregates.Subscription;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.domain.model.aggregates.UserProfile;
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.domain.model.commands.CreateUserProfileCommand;
@@ -15,6 +16,8 @@ import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.in
 import open.source.agriculture.chaquitaclla.chaquitacllaplatformopen.profiles.infrastructure.persistence.jpa.repositories.UserProfileRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,12 +25,15 @@ public class UserProfileCommandServiceImpl implements UserProfileCommandService 
     private final UserProfileRepository userProfileRepository;
     private final CityRepository cityRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final ExternalIamService externalIamService;
 
-    public UserProfileCommandServiceImpl(UserProfileRepository userProfileRepository, CityRepository cityRepository, SubscriptionRepository subscriptionRepository) {
+    public UserProfileCommandServiceImpl(UserProfileRepository userProfileRepository, CityRepository cityRepository, SubscriptionRepository subscriptionRepository, ExternalIamService externalIamService) {
         this.userProfileRepository = userProfileRepository;
         this.cityRepository = cityRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.externalIamService = externalIamService;
     }
+
 
     @Override
     public Optional<UserProfile> handle(CreateUserProfileCommand command) {
@@ -39,6 +45,15 @@ public class UserProfileCommandServiceImpl implements UserProfileCommandService 
         userProfileRepository.findByEmail(emailUser).map(userProfile -> {
             throw new IllegalArgumentException("User with email " + command.email() + " already exists");
         });
+        var userId= externalIamService.fetchUserIdByUsername(command.email());
+        if(userId==0){
+            List<String> roleNames = new ArrayList<>();
+            roleNames.add("ROLE_USER");
+            userId= externalIamService.createUser(command.email(), command.password(), roleNames);
+            if(userId == 0){
+                throw new IllegalArgumentException("Error creating user in IAM context");
+            }
+        }
         var  userProfile = new UserProfile(command.firstName(),command.lastName(), command.email(), command.password(), city, subscription);
         userProfileRepository.save(userProfile);
         return Optional.of(userProfile);
